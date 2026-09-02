@@ -1,0 +1,40 @@
+<style>
+  .directions { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:28px; }
+  .direction { cursor:pointer; border:1px solid #e0e5e8; background:white; transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease; min-width:0; }
+  .direction:hover { transform:translateY(-5px); border-color:#0d4c52; box-shadow:0 16px 34px rgba(15,38,43,.11); }
+  .direction.selected { border:2px solid #0d4c52; box-shadow:0 0 0 4px rgba(13,76,82,.12); }
+  .mini { aspect-ratio: .83; position:relative; overflow:hidden; }
+  .mini nav { position:absolute; top:0; left:0; right:0; height:42px; display:flex; align-items:center; justify-content:space-between; padding:0 15px; font:600 7px/1 Arial; letter-spacing:.08em; }
+  .mini .mini-brand { font:700 11px Georgia,serif; letter-spacing:-.04em; }
+  .mini .nav-dots { display:flex; gap:8px; opacity:.7; }.mini .nav-dots i { display:block; width:13px; height:1px; background:currentColor; }
+  .mini .eyebrow { position:absolute; left:15px; top:70px; font:600 6px Arial; letter-spacing:.16em; text-transform:uppercase; opacity:.65; }
+  .mini h4 { position:absolute; left:15px; right:12px; top:80px; margin:0; font:500 24px/.92 Georgia,serif; letter-spacing:-.07em; }
+  .mini .mini-copy { position:absolute; top:161px; left:15px; width:128px; font:7px/1.45 Arial; opacity:.72; }
+  .mini .mini-cta { position:absolute; left:15px; top:208px; padding:7px 10px; font:600 6px Arial; letter-spacing:.08em; text-transform:uppercase; }
+  .mini .orbit { position:absolute; width:180px; height:180px; border-radius:50%; right:-82px; bottom:-58px; border:1px solid currentColor; opacity:.4; }
+  .mini .orbit:before,.mini .orbit:after { content:''; position:absolute; border:1px solid currentColor; border-radius:50%; inset:19px; }.mini .orbit:after { inset:46px; }
+  .mini .node { position:absolute; width:6px; height:6px; border-radius:50%; right:49px; bottom:42px; box-shadow:0 0 0 7px rgba(255,255,255,.08); }
+  .mini .micro-label { position:absolute; right:15px; bottom:11px; font:6px Arial; letter-spacing:.11em; text-transform:uppercase; transform:rotate(-90deg); transform-origin:right bottom; }
+  .atlas { background:#062d31; color:#f1f1e9; }.atlas .mini-cta{border:1px solid #caa978;color:#f2e9d8}.atlas .node{background:#caa978}.atlas .topo{position:absolute;right:-8px;top:65px;width:112px;height:112px;border:1px solid #8ec3b1;border-radius:46% 54% 39% 61%/57% 42% 58% 43%;opacity:.44}.atlas .topo:before{content:'';position:absolute;inset:13px;border:1px solid #8ec3b1;border-radius:54% 46% 57% 43%/46% 54% 42% 58%}
+  .editorial { background:#f4f0e6; color:#1e2826; }.editorial .mini-cta{background:#a74d2f;color:#fff}.editorial .orbit{border-color:#a74d2f}.editorial .node{background:#a74d2f}.editorial .rule{position:absolute;left:15px;right:15px;bottom:22px;border-top:1px solid #1e2826}.editorial .caption{position:absolute;left:15px;bottom:7px;font:6px Arial;letter-spacing:.1em;text-transform:uppercase}
+  .signal { background:#e9edf0; color:#101922; }.signal .mini-brand{font-family:Arial;font-size:10px;letter-spacing:.08em}.signal h4{font-family:Arial;font-weight:700;letter-spacing:-.1em}.signal .mini-cta{background:#101922;color:#e6ff56}.signal .grid{position:absolute;inset:42px 0 0;background-image:linear-gradient(rgba(16,25,34,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(16,25,34,.13) 1px,transparent 1px);background-size:22px 22px;opacity:.5}.signal .pulse{position:absolute;right:22px;bottom:32px;width:76px;height:46px;border-left:1px solid #101922;border-bottom:1px solid #101922}.signal .pulse:before{content:'';position:absolute;left:0;right:0;top:25px;height:1px;background:#101922;transform:skewY(-31deg);box-shadow:16px -12px 0 -0.2px #101922,35px 9px 0 -0.2px #101922}.signal .node{background:#e6ff56;border:1px solid #101922}
+  .direction-copy { padding:16px 16px 18px; }.direction-copy h3{margin:0 0 7px;color:#152927;font:600 17px/1.1 Georgia,serif;letter-spacing:-.03em}.direction-copy p{margin:0;color:#65706e;font-size:13px;line-height:1.45}.direction-copy strong{color:#0e4d52}.reco{font-size:11px;color:#0e4d52;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;display:block}
+  @media(max-width:780px){.directions{grid-template-columns:1fr}.mini{aspect-ratio:1.65}.mini h4{font-size:30px}.mini .mini-copy{top:164px}.mini .mini-cta{top:211px}}
+</style>
+<h2>Choose the visual foundation</h2>
+<p class="subtitle">Each direction supports an enterprise-grade system. The question is which emotional register should lead MindCraft’s first impression.</p>
+<div class="directions">
+  <div class="direction" data-choice="institutional-atlas" onclick="toggleSelect(this)">
+    <div class="mini atlas"><nav><span class="mini-brand">MindCraft</span><span class="nav-dots"><i></i><i></i><i></i></span></nav><div class="topo"></div><span class="eyebrow">Nairobi / Intelligence system</span><h4>From evidence<br>to action.</h4><p class="mini-copy">Life Sciences depth. African market intelligence. Responsible AI.</p><span class="mini-cta">Explore the model →</span><span class="orbit"></span><i class="node"></i><span class="micro-label">Understand → Measure</span></div>
+    <div class="direction-copy"><span class="reco">Recommended</span><h3>Institutional Atlas</h3><p>Deep mineral teal, bone, and brushed-gold signals. An African intelligence lens without visual cliché—combining an editorial serif with analytical diagrams.</p></div>
+  </div>
+  <div class="direction" data-choice="field-journal" onclick="toggleSelect(this)">
+    <div class="mini editorial"><nav><span class="mini-brand">MindCraft</span><span class="nav-dots"><i></i><i></i><i></i></span></nav><span class="eyebrow">Strategic intelligence / 2026</span><h4>See the market<br>as it is.</h4><p class="mini-copy">Inquiry-led transformation for complex, regulated environments.</p><span class="mini-cta">Begin an inquiry</span><span class="orbit"></span><i class="node"></i><span class="rule"></span><span class="caption">Field notes / across Africa</span></div>
+    <div class="direction-copy"><span class="reco" style="visibility:hidden">Recommended</span><h3>Field Journal</h3><p>Warm paper, ink, and terracotta. More human and research-led; ideal if MindCraft should feel like a discerning, high-touch advisory institution.</p></div>
+  </div>
+  <div class="direction" data-choice="enterprise-signal" onclick="toggleSelect(this)">
+    <div class="mini signal"><div class="grid"></div><nav><span class="mini-brand">MINDCRAFT</span><span class="nav-dots"><i></i><i></i><i></i></span></nav><span class="eyebrow">Enterprise AI / deployed with care</span><h4>Intelligence<br>that operates.</h4><p class="mini-copy">Strategy, systems, and people moving in one governed workflow.</p><span class="mini-cta">View capability graph</span><span class="pulse"></span><i class="node"></i><span class="micro-label">Signal / 01</span></div>
+    <div class="direction-copy"><span class="reco" style="visibility:hidden">Recommended</span><h3>Enterprise Signal</h3><p>Steel, black, and acid-lime signals. The most technical choice—best for emphasizing AI systems, but risks over-indexing on technology.</p></div>
+  </div>
+</div>
+<p class="subtitle" style="margin-top:24px"><strong>My recommendation:</strong> Institutional Atlas. It gives Life Sciences and African context a credible, ownable point of view while reserving product-like surfaces for the research and AI experiences.</p>
