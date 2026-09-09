@@ -1,60 +1,87 @@
 import React from 'react';
-import { ArrowUpRight, ArrowRight, BookOpen, Users, ShieldCheck, CheckCircle2, Award } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, BookOpen, Users, ShieldCheck, CheckCircle2, Award, Sparkles, GraduationCap } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { AILearningLadder } from '../components/AILearningLadder';
 
 export const AITraining: React.FC = () => {
   const { navigate } = useNavigation();
 
   return (
     <div className="space-y-0">
-      {/* Editorial Header */}
+      {/* ─────────────────────────────────────────────────────────────
+          EDITORIAL HEADER — EXECUTIVE LEARNING ARCHITECTURE
+      ───────────────────────────────────────────────────────────── */}
       <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
           <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
             <span className="text-[var(--accent)] font-semibold">PILLAR 03 · INSTITUTIONAL CAPABILITY</span>
             <span>·</span>
-            <span>HUMAN ADOPTION</span>
+            <span>EXECUTIVE LEARNING ARCHITECTURE</span>
+            <span>·</span>
+            <span>HUMAN FLUENCY</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left: Thesis (7 cols) */}
             <div className="lg:col-span-7 space-y-6">
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
                 AI Training & Digital Literacy.
               </h1>
               <p className="font-body text-lg text-[var(--ink)] leading-relaxed">
-                Technology investments fail when human adoption lags behind. We design executive masterclasses, clinical workflows, and workforce upskilling programs that embed permanent AI capabilities within African institutions.
+                Technology investments fail when institutional human capability lags behind. We design executive masterclasses, clinical decision workflows, and engineering enablement labs that build permanent, sovereign technological independence within African institutions.
               </p>
+
+              {/* Learning Philosophy Metrics */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Strategic</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">Boardroom & fiduciary governance</span>
+                </div>
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Clinical</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">CPD-accredited medical workflows</span>
+                </div>
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Sovereign</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">Internal Center of Excellence transfer</span>
+                </div>
+              </div>
+
               <div className="flex flex-wrap gap-4 pt-2">
                 <button
                   onClick={() => navigate('/contact?topic=ai-training')}
                   className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm inline-flex items-center space-x-2 cursor-pointer"
                 >
-                  <span>Request an Executive Program</span>
+                  <span>Inquire About Executive Cohort</span>
                   <ArrowUpRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => navigate('/explore?capability=AI%20Training')}
+                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--ink-strong)] bg-transparent hover:bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] transition-colors inline-flex items-center space-x-2 cursor-pointer"
+                >
+                  <span>Compose Training Brief</span>
+                  <ArrowRight className="w-4 h-4 text-[var(--accent)]" />
                 </button>
               </div>
             </div>
 
-            <div className="lg:col-span-5 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider">
-                Pedagogical Framework
-              </div>
-              <div className="space-y-2.5 text-[var(--ink-2)] border-t border-[var(--line)] pt-3">
-                <div className="flex justify-between">
-                  <span>Target Audiences</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">C-Suite, Directors & Clinicians</span>
+            {/* Right: Masterclass Lab Photography Anchor (5 cols) */}
+            <div className="lg:col-span-5 space-y-3">
+              <div className="border border-[var(--line)] bg-[var(--paper-2)] p-2 rounded-[2px] shadow-sm">
+                <div className="aspect-[4/3] overflow-hidden rounded-[2px] relative">
+                  <img
+                    src="/assets/images/african_executive_training_1788986677111.jpg"
+                    alt="African leaders, senior executives and clinicians participating in strategic AI literacy masterclass"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                  <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-xs text-white font-mono text-[9px] uppercase tracking-wider px-2 py-0.5">
+                    Nairobi Executive Learning Lab
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span>Curriculum Focus</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Practical Applied Tooling</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Governance Integration</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Responsible & Sovereign AI</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Outcomes</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Internal Self-Sufficiency</span>
+                <div className="pt-2 px-1 flex items-center justify-between font-mono text-[11px] text-[var(--ink-3)]">
+                  <span>Executive Simulation & Governance</span>
+                  <span className="text-[var(--accent)] font-semibold">100% Practical Labs</span>
                 </div>
               </div>
             </div>
@@ -62,98 +89,69 @@ export const AITraining: React.FC = () => {
         </div>
       </section>
 
-      {/* Four Training Tracks */}
+      {/* ─────────────────────────────────────────────────────────────
+          INTERACTIVE HUMAN CAPABILITY LADDER
+      ───────────────────────────────────────────────────────────── */}
       <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
           <div className="space-y-2 pb-6 border-b border-[var(--line)]">
             <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              CURRICULUM TRACKS
+              CAPABILITY PROGRESSION
             </div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Four tailored learning tracks.
+              From boardroom governance to production engineering.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Track 1 */}
-            <div className="p-8 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold">01 · EXECUTIVE LEADERSHIP</div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                AI for Board & Senior Executives
-              </h3>
-              <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                Strategic orientation for CEOs, CFOs, and board members. Understanding capital allocation for AI, risk management, vendor evaluation, talent strategy, and distinguishing marketing noise from authentic operational ROI.
-              </p>
-            </div>
-
-            {/* Track 2 */}
-            <div className="p-8 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold">02 · FUNCTIONAL ENABLEMENT</div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                Role-Specific AI Workflows
-              </h3>
-              <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                Hands-on practical tooling for commercial teams (territory intelligence, CRM enhancement), clinical researchers (literature synthesis, regulatory drafting), and finance teams (automated audit and reconciliation).
-              </p>
-            </div>
-
-            {/* Track 3 */}
-            <div className="p-8 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold">03 · GOVERNANCE & ETHICS</div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                Responsible AI & Data Privacy
-              </h3>
-              <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                Navigating African national data protection legislation (e.g., Kenya Data Protection Act, Nigeria NDPR, South Africa POPIA). Mitigating algorithmic bias, clinical validation standards, and establishing institutional AI review boards.
-              </p>
-            </div>
-
-            {/* Track 4 */}
-            <div className="p-8 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold">04 · INTERNAL CHAMPIONS</div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                Train-the-Trainer Certification
-              </h3>
-              <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                Developing internal AI champions within your organization who can mentor peers, identify new high-value automation use cases, and ensure continuous cross-departmental adoption without endless consultant reliance.
-              </p>
-            </div>
-          </div>
+          <AILearningLadder />
         </div>
       </section>
 
-      {/* The 4 Delivery Formats */}
+      {/* ─────────────────────────────────────────────────────────────
+          DELIVERY MODES SPECIFICATIONS
+      ───────────────────────────────────────────────────────────── */}
       <section className="py-16 lg:py-24 bg-[var(--paper)] border-b border-[var(--line)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
           <div className="space-y-2 pb-6 border-b border-[var(--line)]">
             <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              FLEXIBLE DELIVERY MODES
+              DELIVERY MODALITIES
             </div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Engineered for busy professionals.
+              Tailored for enterprise executive rhythms.
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-            <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-              <div className="text-[var(--accent)] font-bold mb-1">MODE 01</div>
-              <div className="text-[var(--ink-strong)] font-semibold mb-1">Executive Retreats</div>
-              <div className="text-[var(--ink-3)] text-[11px]">1–2 day intensive off-site strategy immersions with executive simulations.</div>
+            <div className="p-5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
+              <div className="text-[var(--accent)] font-bold text-sm">FORMAT 01</div>
+              <div className="text-[var(--ink-strong)] font-semibold">Executive Boardroom Retreats</div>
+              <div className="text-[var(--ink-3)] text-[11px] leading-relaxed">
+                1–2 day intensive off-site strategy immersions with simulated crisis scenarios and regulatory risk audits.
+              </div>
             </div>
-            <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-              <div className="text-[var(--accent)] font-bold mb-1">MODE 02</div>
-              <div className="text-[var(--ink-strong)] font-semibold mb-1">Cohort Virtual Programs</div>
-              <div className="text-[var(--ink-3)] text-[11px]">4–6 week modular tracks combining live interactive labs and asynchronous exercises.</div>
+
+            <div className="p-5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
+              <div className="text-[var(--accent)] font-bold text-sm">FORMAT 02</div>
+              <div className="text-[var(--ink-strong)] font-semibold">Departmental Workflow Sprints</div>
+              <div className="text-[var(--ink-3)] text-[11px] leading-relaxed">
+                4-week applied cohort sprints redesigning operational processes into deterministic AI pipelines with verification loops.
+              </div>
             </div>
-            <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-              <div className="text-[var(--accent)] font-bold mb-1">MODE 03</div>
-              <div className="text-[var(--ink-strong)] font-semibold mb-1">In-House Bootcamps</div>
-              <div className="text-[var(--ink-3)] text-[11px]">Dedicated on-premise training tailored directly to your proprietary company systems.</div>
+
+            <div className="p-5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
+              <div className="text-[var(--accent)] font-bold text-sm">FORMAT 03</div>
+              <div className="text-[var(--ink-strong)] font-semibold">Clinical Decision Sandboxes</div>
+              <div className="text-[var(--ink-3)] text-[11px] leading-relaxed">
+                Hospital and laboratory-tailored sessions on ambient charting, differential diagnosis support, and bioethics compliance.
+              </div>
             </div>
-            <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-              <div className="text-[var(--accent)] font-bold mb-1">MODE 04</div>
-              <div className="text-[var(--ink-strong)] font-semibold mb-1">Self-Paced Sandboxes</div>
-              <div className="text-[var(--ink-3)] text-[11px]">Customized interactive learning portal pre-loaded with your operational data examples.</div>
+
+            <div className="p-5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
+              <div className="text-[var(--accent)] font-bold text-sm">FORMAT 04</div>
+              <div className="text-[var(--ink-strong)] font-semibold">Engineering Immersion Labs</div>
+              <div className="text-[var(--ink-3)] text-[11px] leading-relaxed">
+                Hands-on code labs fine-tuning local models (PEFT/LoRA), building private RAG vector databases, and containerized deployment.
+              </div>
             </div>
           </div>
         </div>
@@ -164,7 +162,7 @@ export const AITraining: React.FC = () => {
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
             <span className="font-mono text-xs text-[var(--accent)] font-semibold uppercase">Next Step in the Engine</span>
-            <h3 className="font-display text-xl font-bold text-[var(--ink-strong)]">Pair your trained workforce with production-grade AI enterprise solutions.</h3>
+            <h3 className="font-display text-xl font-bold text-[var(--ink-strong)]">Pair trained teams with production-grade AI enterprise systems.</h3>
           </div>
           <button
             onClick={() => navigate('/what-we-do/ai-enterprise-solutions')}

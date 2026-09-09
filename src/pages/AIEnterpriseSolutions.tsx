@@ -1,29 +1,52 @@
 import React from 'react';
-import { ArrowUpRight, ArrowRight, Cpu, ShieldCheck, Database, Server, Terminal, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Cpu, ShieldCheck, Database, Server, Terminal, CheckCircle2, Lock, Zap } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { AITechnologyArchitecture } from '../components/AITechnologyArchitecture';
 
 export const AIEnterpriseSolutions: React.FC = () => {
   const { navigate } = useNavigation();
 
   return (
     <div className="space-y-0">
-      {/* Editorial Header */}
+      {/* ─────────────────────────────────────────────────────────────
+          EDITORIAL HEADER WITH ARCHITECTURAL VISUAL ANCHOR
+      ───────────────────────────────────────────────────────────── */}
       <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
           <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
             <span className="text-[var(--accent)] font-semibold">PILLAR 04 · PRODUCTION SYSTEMS</span>
             <span>·</span>
             <span>SOVEREIGN ARCHITECTURES</span>
+            <span>·</span>
+            <span>ENTERPRISE ENGINEERING</span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left: Thesis (7 cols) */}
             <div className="lg:col-span-7 space-y-6">
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
                 AI Enterprise Solutions.
               </h1>
               <p className="font-body text-lg text-[var(--ink)] leading-relaxed">
-                We design and deploy custom, production-grade AI systems built for enterprise security, data sovereignty, and high-reliability operational execution across Africa.
+                We design and deploy custom, production-grade AI systems built for enterprise security, strict data sovereignty, deterministic auditability, and zero cross-border data leakage across African institutions.
               </p>
+
+              {/* Engineering Guarantees Strip */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Sovereign VPC</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">Local on-prem or private cloud</span>
+                </div>
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Deterministic</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">Strict schema validation & tests</span>
+                </div>
+                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
+                  <span className="text-[var(--accent)] font-bold block text-sm">Zero Leakage</span>
+                  <span className="text-[var(--ink-2)] text-[11px]">No public multi-tenant model training</span>
+                </div>
+              </div>
+
               <div className="flex flex-wrap gap-4 pt-2">
                 <button
                   onClick={() => navigate('/contact?topic=ai-enterprise-solutions')}
@@ -32,29 +55,33 @@ export const AIEnterpriseSolutions: React.FC = () => {
                   <span>Scope an Enterprise AI Architecture</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
+                <button
+                  onClick={() => navigate('/explore?capability=AI%20Enterprise%20Solutions')}
+                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--ink-strong)] bg-transparent hover:bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] transition-colors inline-flex items-center space-x-2 cursor-pointer"
+                >
+                  <span>Compose Technology Brief</span>
+                  <ArrowRight className="w-4 h-4 text-[var(--accent)]" />
+                </button>
               </div>
             </div>
 
-            <div className="lg:col-span-5 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider">
-                Engineering Guarantees
-              </div>
-              <div className="space-y-2.5 text-[var(--ink-2)] border-t border-[var(--line)] pt-3">
-                <div className="flex justify-between">
-                  <span>Deployment Model</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Private Cloud or On-Premises</span>
+            {/* Right: Architecture Command Center Visual Anchor (5 cols) */}
+            <div className="lg:col-span-5 space-y-3">
+              <div className="border border-[var(--line)] bg-[var(--paper-2)] p-2 rounded-[2px] shadow-sm">
+                <div className="aspect-[4/3] overflow-hidden rounded-[2px] relative">
+                  <img
+                    src="/assets/images/african_enterprise_architecture_1788986661159.jpg"
+                    alt="African systems engineers and data architects monitoring enterprise AI pipeline infrastructure"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                  <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-xs text-white font-mono text-[9px] uppercase tracking-wider px-2 py-0.5">
+                    Nairobi Systems Engineering Hub
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span>Data Sovereignty</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Zero External Model Training</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Architecture</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">RAG, Fine-Tuned LLMs, RPA</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Audit Trail</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">Full Deterministic Traceability</span>
+                <div className="pt-2 px-1 flex items-center justify-between font-mono text-[11px] text-[var(--ink-3)]">
+                  <span>Sovereign VPC Infrastructure</span>
+                  <span className="text-[var(--accent)] font-semibold">100% Data Enclave</span>
                 </div>
               </div>
             </div>
@@ -62,55 +89,27 @@ export const AIEnterpriseSolutions: React.FC = () => {
         </div>
       </section>
 
-      {/* Production Architecture Diagram */}
+      {/* ─────────────────────────────────────────────────────────────
+          INTERACTIVE TECHNOLOGY ARCHITECTURE STACK
+      ───────────────────────────────────────────────────────────── */}
       <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
           <div className="space-y-2 pb-6 border-b border-[var(--line)]">
             <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              SYSTEM TOPOLOGY
+              SYSTEM TOPOLOGY & PIPELINES
             </div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Secure, sovereign enterprise pipeline.
+              Four-layer production architecture for high-stakes enterprise workflows.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="text-[var(--accent)] font-bold text-sm">STAGE 01</div>
-              <div className="font-display font-bold text-base text-[var(--ink-strong)]">Data Ingestion & Sanitization</div>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Automated document extraction, PII anonymization, and multimodal ingestion from PDFs, electronic medical records, ERPs, and scanned clinical dossiers.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="text-[var(--accent)] font-bold text-sm">STAGE 02</div>
-              <div className="font-display font-bold text-base text-[var(--ink-strong)]">Private Vector & Semantic Memory</div>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Encrypted enterprise vector store and private contextual embeddings ensuring proprietary data never crosses international borders or leaks into public models.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="text-[var(--accent)] font-bold text-sm">STAGE 03</div>
-              <div className="font-display font-bold text-base text-[var(--ink-strong)]">Domain-Tuned Reasoner Models</div>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                State-of-the-art open weights or dedicated private cloud models fine-tuned on African pharmaceutical regulations, tax codes, and regional clinical nomenclatures.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="text-[var(--accent)] font-bold text-sm">STAGE 04</div>
-              <div className="font-display font-bold text-base text-[var(--ink-strong)]">Automated API Execution & Audit</div>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Direct integration into core ERP/HIS workflows with automated human-in-the-loop review queues, hallucination mitigations, and strict regulatory audit logs.
-              </p>
-            </div>
-          </div>
+          <AITechnologyArchitecture />
         </div>
       </section>
 
-      {/* Specialized Life Sciences AI Capabilities */}
+      {/* ─────────────────────────────────────────────────────────────
+          SPECIALIZED LIFE SCIENCES & ENTERPRISE PRODUCTION SOLUTIONS
+      ───────────────────────────────────────────────────────────── */}
       <section className="py-16 lg:py-24 bg-[var(--paper)] border-b border-[var(--line)]">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
           <div className="space-y-2 pb-6 border-b border-[var(--line)]">
@@ -118,7 +117,7 @@ export const AIEnterpriseSolutions: React.FC = () => {
               DOMAIN DEPTH
             </div>
             <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Specialized Life Sciences & clinical AI solutions.
+              Specialized clinical & enterprise AI deployments.
             </h2>
           </div>
 
