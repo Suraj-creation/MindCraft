@@ -6,7 +6,7 @@
 
 ## 1. Route & meta
 - **Route:** `/explore` (query-parameterized, see §8.6).
-- **Nav:** **not** a top-level nav item (keeps nav to 6 + CTA). Surfaced contextually from Home ("Explore your situation"), `/what-we-do`, `/industries`, `/where-we-work`. Directly reachable and deep-linkable at `/explore`.
+- **Nav:** Top-level primary navigation item (`Explore` between `How We Work` and `Insights`). Also surfaced contextually from Home ("Explore your situation"), `/what-we-do`, `/industries`, `/where-we-work`. Directly reachable and deep-linkable at `/explore`.
 - **Disclosure role:** EXPLORE → DETAIL → ENGAGE (the composition tool).
 - **Canonical ownership:** owns **no** primary facts — it *composes* from the canonical data files (`pillars.ts`, `industries.ts`, `lifeSciences.ts`, `geography.ts`). It restates nothing; it recombines and links back to canonical pages.
 
