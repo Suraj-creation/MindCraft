@@ -1,291 +1,209 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Compass, Sparkles, CheckCircle2, Clock, FileText, ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { Section, Container } from '../components/layout/Section';
 
 const INDUSTRIES = [
-  'Pharmaceuticals & Biologics',
-  'Medical Devices & Diagnostics',
-  'Hospitals & Healthcare Networks',
-  'Commercial Banking & FinTech',
-  'Insurance & Underwriting',
-  'Renewable Energy & Off-Grid',
-  'Agribusiness & Crop Science',
-  'Consumer Goods & Retail',
-  'Telecommunications & Digital Infra',
-  'Public Sector & Development Agencies'
+  'Pharmaceuticals',
+  'Medical Devices',
+  'Medical Diagnostics',
+  'Hospitals & Healthcare Providers',
+  'Chemicals & Agrochemicals',
+  'Automotive',
+  'Banking & Financial Services',
+  'Public Sector & Development',
 ];
 
 const GEOGRAPHIES = [
-  'Kenya & East African Community (EAC)',
-  'Nigeria & ECOWAS Regional Bloc',
-  'South Africa & SADC Corridor',
-  'Egypt & North African Gateway',
-  'Pan-African Multi-Country Mandate',
-  'European / African Trade Corridor',
-  'North American / African Biotech Corridor'
+  'Kenya & East Africa',
+  'Nigeria & West Africa',
+  'South Africa & Southern Africa',
+  'Egypt & North Africa',
+  'Pan-African, multi-country',
+  'Europe & Africa corridor',
+  'United States & Africa corridor',
 ];
 
 const CAPABILITIES = [
-  'Market Research & Field Intelligence',
-  'Business Consulting & Corporate Strategy',
-  'AI Enterprise Solutions & Systems',
-  'AI Training & Institutional Literacy',
-  'Integrated End-to-End Advisory'
+  'Market Research',
+  'Business Consulting',
+  'AI Enterprise Solutions',
+  'AI Training',
+  'All four, integrated',
 ];
+
+/* Output is composed only from pillar scope and geography facts. Where a
+   combination has no source-specific detail it degrades to a general capability
+   statement. It never asserts a case study, a metric, a named client, a
+   delivery timeline or a team located anywhere but Nairobi. */
+function compose(industry: string, geography: string, capability: string) {
+  const lifeSciences = /Pharmaceutic|Device|Diagnostic|Hospital/.test(industry);
+  const ai = capability.includes('AI') || capability.includes('integrated');
+
+  const scope: Record<string, string> = {
+    'Market Research':
+      'Primary and secondary research designed to turn market complexity into decision-ready intelligence.',
+    'Business Consulting':
+      'Strategic and management advisory covering operating model, growth and execution.',
+    'AI Enterprise Solutions':
+      'Design, build and integration of AI systems that operationalise insight into everyday workflows.',
+    'AI Training':
+      'Hands-on capability building that leaves internal practitioners rather than awareness alone.',
+    'All four, integrated':
+      'One engagement across research, strategy, enterprise AI and training, rather than four vendors.',
+  };
+
+  const deliverables = lifeSciences
+    ? [
+        'Regulatory pathway mapping against the relevant national authorities',
+        'Market access, pricing and KOL landscape analysis',
+        'Distribution and route-to-market structure for the territory',
+      ]
+    : [
+        'Stakeholder mapping and regulatory landscape for the territory',
+        'Operating model and commercial distribution assessment',
+        'An executive brief structured for a board decision',
+      ];
+
+  if (ai && lifeSciences) {
+    deliverables.push('Governance and data-protection review for regulated deployment');
+  } else if (ai) {
+    deliverables.push('Solution architecture and workforce capability plan');
+  }
+
+  return {
+    headline: `${capability} for ${industry.toLowerCase()} in ${geography}.`,
+    scope: scope[capability] ?? scope['All four, integrated'],
+    deliverables,
+    lifeSciences,
+  };
+}
 
 export const Explore: React.FC = () => {
   const { queryParams, navigate } = useNavigation();
 
-  const [selectedIndustry, setSelectedIndustry] = useState<string>(
-    queryParams.industry || 'Pharmaceuticals & Biologics'
-  );
-  const [selectedGeography, setSelectedGeography] = useState<string>(
-    queryParams.geography || 'Kenya & East African Community (EAC)'
-  );
-  const [selectedCapability, setSelectedCapability] = useState<string>(
-    queryParams.capability || 'Market Research & Field Intelligence'
-  );
+  const [industry, setIndustry] = useState(queryParams.industry || INDUSTRIES[0]);
+  const [geography, setGeography] = useState(queryParams.geography || GEOGRAPHIES[0]);
+  const [capability, setCapability] = useState(queryParams.capability || CAPABILITIES[0]);
 
   useEffect(() => {
-    if (queryParams.industry) setSelectedIndustry(queryParams.industry);
-    if (queryParams.geography) setSelectedGeography(queryParams.geography);
-    if (queryParams.capability) setSelectedCapability(queryParams.capability);
+    if (queryParams.industry) setIndustry(queryParams.industry);
+    if (queryParams.geography) setGeography(queryParams.geography);
+    if (queryParams.capability) setCapability(queryParams.capability);
   }, [queryParams]);
 
-  // Generate tailored advisory synthesis
-  const getSynthesis = () => {
-    const isLifeSciences = selectedIndustry.includes('Pharm') || selectedIndustry.includes('Device') || selectedIndustry.includes('Health');
-    const isAI = selectedCapability.includes('AI');
+  const result = compose(industry, geography, capability);
 
-    let advisoryFocus = `MindCraft structures a targeted engagement deploying in-country field teams and senior advisors in ${selectedGeography} specifically tailored to ${selectedIndustry}.`;
-    let keyDeliverables = [
-      'Empirical stakeholder mapping and regulatory compliance roadmap',
-      'Operating model adjustments and commercial distribution strategy',
-      'Executive briefing dossier with milestone execution schedule'
-    ];
-    let timeline = '8 to 14 weeks from ToR execution';
-
-    if (isLifeSciences && isAI) {
-      advisoryFocus = `Deploying private sovereign machine learning models and NLP document processors calibrated to national health authorities across ${selectedGeography} for ${selectedIndustry}.`;
-      keyDeliverables = [
-        'Private AI pipeline for regulatory submission tracking and PV reporting',
-        'Compliance audit ensuring adherence to local data protection laws',
-        'Clinician and regulatory affairs staff workflow upskilling program'
-      ];
-      timeline = '12 to 18 weeks (Agile sprints with bi-weekly review gates)';
-    } else if (isLifeSciences) {
-      advisoryFocus = `Specialized Life Sciences advisory addressing cross-border registration, formulary inclusions, and distributor governance in ${selectedGeography}.`;
-      keyDeliverables = [
-        'National regulatory authority submission dossier (PPB / NAFDAC / SAHPRA)',
-        'Key Opinion Leader (KOL) prescribing behavior and pricing audit',
-        'Wholesale cold chain and commercial route-to-market architecture'
-      ];
-      timeline = '10 to 16 weeks';
-    } else if (isAI) {
-      advisoryFocus = `Enterprise AI system architecture, data sovereignty verification, and workforce capability building for ${selectedIndustry} in ${selectedGeography}.`;
-      keyDeliverables = [
-        'Private on-premise/cloud AI infrastructure architecture specification',
-        'Custom fine-tuned domain reasoner and automated document extractor',
-        'Executive AI masterclass and department champion certification'
-      ];
-      timeline = '10 to 14 weeks';
-    }
-
-    return { advisoryFocus, keyDeliverables, timeline };
+  const openContact = () => {
+    const params = new URLSearchParams({ industry, geography, capability });
+    navigate(`/contact?${params.toString()}`);
   };
 
-  const synthesis = getSynthesis();
-
-  const handleStartConversation = () => {
-    const searchParams = new URLSearchParams({
-      industry: selectedIndustry,
-      geography: selectedGeography,
-      capability: selectedCapability
-    });
-    navigate(`/contact?${searchParams.toString()}`);
-  };
+  const fields = [
+    { label: 'Industry', value: industry, set: setIndustry, opts: INDUSTRIES },
+    { label: 'Geography', value: geography, set: setGeography, opts: GEOGRAPHIES },
+    { label: 'Capability', value: capability, set: setCapability, opts: CAPABILITIES },
+  ];
 
   return (
-    <div className="space-y-0">
-      {/* Editorial Header */}
-      <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
-            <span className="text-[var(--accent)] font-semibold">STRATEGIC ADVISORY COMPOSER</span>
-            <span>·</span>
-            <span>INDUSTRY × GEOGRAPHY × CAPABILITY</span>
-            <span>·</span>
-            <span>REAL-TIME BRIEF</span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-8 space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
-                Strategic Explorer.
-              </h1>
-              <p className="font-body text-lg text-[var(--ink)] leading-relaxed max-w-3xl">
-                Configure your organization's exact strategic challenge across industry, African geography, and functional capability to instantly generate a tailored engagement brief.
-              </p>
+    <div>
+      <section className="pt-[var(--band-tight)] pb-[var(--band-tight)]">
+        <Container width="wide">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-6 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <h1 className="text-h1">Compose your situation.</h1>
             </div>
-
-            <div className="lg:col-span-4 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-3 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider">
-                How It Operates
-              </div>
-              <p className="text-[var(--ink-2)] leading-relaxed">
-                Our matrix models real engagement parameters derived from verified African operational mandates, regulatory frameworks, and enterprise technology implementations.
+            <div className="lg:col-span-5 lg:pt-4">
+              <p className="text-body text-[var(--color-ink-2)]">
+                Three choices, and what MindCraft would bring to that combination. Nothing here is a
+                case study — it is the scope of the work, stated plainly.
               </p>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* The 3-Slot Interactive Composer Canvas */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
-          {/* Selector Slots Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Slot 1: Industry */}
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-[var(--line)]">
-                <span className="font-mono text-xs text-[var(--accent)] font-bold">SLOT 01</span>
-                <span className="font-mono text-[10px] uppercase text-[var(--ink-3)]">Industry Sector</span>
-              </div>
-              <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
-                {INDUSTRIES.map((ind) => (
-                  <button
-                    key={ind}
-                    onClick={() => setSelectedIndustry(ind)}
-                    className={`w-full text-left p-2.5 rounded-[2px] font-mono text-xs transition-colors cursor-pointer ${
-                      selectedIndustry === ind
-                        ? 'bg-[var(--accent)] text-white font-semibold'
-                        : 'hover:bg-[var(--paper-2)] text-[var(--ink)]'
-                    }`}
-                  >
-                    {ind}
-                  </button>
-                ))}
-              </div>
-            </div>
+      {/* The interface is the visual: three hairline selectors, no chrome. */}
+      <Section tone="ground-2" band="normal" width="wide" rule>
+        <p className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]">
+          Industry × Geography × Capability → Result
+        </p>
 
-            {/* Slot 2: Geography */}
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-[var(--line)]">
-                <span className="font-mono text-xs text-[var(--accent)] font-bold">SLOT 02</span>
-                <span className="font-mono text-[10px] uppercase text-[var(--ink-3)]">Geographic Focus</span>
-              </div>
-              <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
-                {GEOGRAPHIES.map((geo) => (
-                  <button
-                    key={geo}
-                    onClick={() => setSelectedGeography(geo)}
-                    className={`w-full text-left p-2.5 rounded-[2px] font-mono text-xs transition-colors cursor-pointer ${
-                      selectedGeography === geo
-                        ? 'bg-[var(--accent)] text-white font-semibold'
-                        : 'hover:bg-[var(--paper-2)] text-[var(--ink)]'
-                    }`}
-                  >
-                    {geo}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Slot 3: Capability */}
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-[var(--line)]">
-                <span className="font-mono text-xs text-[var(--accent)] font-bold">SLOT 03</span>
-                <span className="font-mono text-[10px] uppercase text-[var(--ink-3)]">Capability Discipline</span>
-              </div>
-              <div className="space-y-1.5 max-h-72 overflow-y-auto pr-1">
-                {CAPABILITIES.map((cap) => (
-                  <button
-                    key={cap}
-                    onClick={() => setSelectedCapability(cap)}
-                    className={`w-full text-left p-2.5 rounded-[2px] font-mono text-xs transition-colors cursor-pointer ${
-                      selectedCapability === cap
-                        ? 'bg-[var(--accent)] text-white font-semibold'
-                        : 'hover:bg-[var(--paper-2)] text-[var(--ink)]'
-                    }`}
-                  >
-                    {cap}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Generated Real-Time Intelligence Brief */}
-          <div className="p-8 bg-[var(--paper)] border-2 border-[var(--accent)]/60 rounded-[2px] space-y-6 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[var(--line)]">
-              <div>
-                <span className="font-mono text-xs text-[var(--accent)] font-semibold uppercase">
-                  Synthesized Advisory Angle
-                </span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-strong)] mt-1">
-                  {selectedIndustry} · {selectedGeography}
-                </h2>
-                <div className="font-mono text-xs text-[var(--ink-2)] mt-0.5">
-                  Focus Discipline: <span className="font-semibold text-[var(--accent)]">{selectedCapability}</span>
-                </div>
-              </div>
-
-              <button
-                onClick={handleStartConversation}
-                className="px-6 py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-2)] text-white text-xs font-mono uppercase tracking-wider font-semibold rounded-[2px] transition-colors inline-flex items-center space-x-2 whitespace-nowrap self-start md:self-auto cursor-pointer shadow-sm"
+        <div className="mt-10 grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3">
+          {fields.map((f) => (
+            <div key={f.label}>
+              <label
+                htmlFor={`explore-${f.label}`}
+                className="block font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]"
               >
-                <span>Start a Conversation About This</span>
-                <ArrowUpRight className="w-4 h-4" />
-              </button>
+                {f.label}
+              </label>
+              <select
+                id={`explore-${f.label}`}
+                value={f.value}
+                onChange={(e) => f.set(e.target.value)}
+                className="w-full cursor-pointer appearance-none border-0 border-b border-[var(--color-line-2)] bg-transparent pt-2 pb-3 text-h5 text-[var(--color-ink-strong)] transition-colors hover:border-[var(--color-accent)] focus:border-[var(--color-accent)] focus:outline-none"
+              >
+                {f.opts.map((o) => (
+                  <option key={o} value={o} className="bg-[var(--color-surface)]">
+                    {o}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Recomputes live — no submit button, per the disclosure model. */}
+      <Section band="normal" width="wide" rule>
+        <div aria-live="polite">
+          <div className="grid grid-cols-1 gap-x-14 gap-y-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <h2 className="text-h3">{result.headline}</h2>
+              <p className="measure mt-6 text-body text-[var(--color-ink-2)]">{result.scope}</p>
+              {result.lifeSciences && (
+                <p className="mt-6 text-body-sm text-[var(--color-grass)]">
+                  This sits inside our core Life Sciences specialisation.
+                </p>
+              )}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="font-mono text-xs text-[var(--ink-3)] uppercase font-semibold">
-                  Mandate Overview & Approach:
-                </div>
-                <p className="font-body text-base text-[var(--ink)] leading-relaxed">
-                  {synthesis.advisoryFocus}
-                </p>
-
-                <div className="space-y-2 pt-2">
-                  <div className="font-mono text-xs text-[var(--ink-3)] uppercase font-semibold">
-                    Core Milestone Deliverables:
-                  </div>
-                  <div className="space-y-2">
-                    {synthesis.keyDeliverables.map((item, idx) => (
-                      <div key={idx} className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] font-mono text-xs text-[var(--ink)] flex items-start space-x-2">
-                        <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-5 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs">
-                <div className="text-[var(--accent)] font-semibold uppercase tracking-wider">
-                  Operational Parameters
-                </div>
-                <div className="space-y-2.5 text-[var(--ink-2)] border-t border-[var(--line)] pt-3">
-                  <div>
-                    <span className="text-[var(--ink-3)] block text-[10px] uppercase">Estimated Timeline</span>
-                    <span className="text-[var(--ink-strong)] font-semibold">{synthesis.timeline}</span>
-                  </div>
-                  <div>
-                    <span className="text-[var(--ink-3)] block text-[10px] uppercase">Senior Staffing</span>
-                    <span className="text-[var(--ink-strong)]">Partner lead + In-country researcher + AI architect</span>
-                  </div>
-                  <div>
-                    <span className="text-[var(--ink-3)] block text-[10px] uppercase">Quality Review Gate</span>
-                    <span className="text-[var(--ink-strong)]">Peer-reviewed empirical baseline audit</span>
-                  </div>
-                </div>
-              </div>
+            <div className="lg:col-span-7">
+              <h3 className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]">
+                What an engagement would cover
+              </h3>
+              <ul className="mt-4">
+                {result.deliverables.map((d) => (
+                  <li
+                    key={d}
+                    className="border-t border-[var(--color-line)] py-4 text-body text-[var(--color-ink)]"
+                  >
+                    {d}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-caption text-[var(--color-ink-3)]">
+                Scope is shaped in Discovery. We will tell you if a question is outside what we can
+                credibly answer.
+              </p>
             </div>
           </div>
+
+          <div className="mt-14 flex flex-wrap items-center gap-5 border-t border-[var(--color-line-2)] pt-8">
+            <button
+              onClick={openContact}
+              className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]"
+            >
+              Start a conversation about this
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+            </button>
+            <p className="text-caption text-[var(--color-ink-3)]">
+              Your three selections carry over to the form.
+            </p>
+          </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 };

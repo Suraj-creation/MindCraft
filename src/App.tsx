@@ -1,31 +1,42 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { NavigationProvider, useNavigation } from './context/NavigationContext';
 import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 
-// Pages
+// Home is the LCP route and ships in the initial chunk. Every other route is
+// split out — loading all fourteen eagerly put the bundle over the 110KB
+// gzipped budget in specs/23, which is CI-blocking.
 import { Home } from './pages/Home';
-import { About } from './pages/About';
-import { WhatWeDo } from './pages/WhatWeDo';
-import { BusinessConsulting } from './pages/BusinessConsulting';
-import { MarketResearch } from './pages/MarketResearch';
-import { AITraining } from './pages/AITraining';
-import { AIEnterpriseSolutions } from './pages/AIEnterpriseSolutions';
-import { Industries } from './pages/Industries';
-import { LifeSciences } from './pages/LifeSciences';
-import { WhereWeWork } from './pages/WhereWeWork';
-import { HowWeWork } from './pages/HowWeWork';
-import { Explore } from './pages/Explore';
-import { Insights } from './pages/Insights';
-import { Contact } from './pages/Contact';
+
+const About = lazy(() => import('./pages/About').then((m) => ({ default: m.About })));
+const WhatWeDo = lazy(() => import('./pages/WhatWeDo').then((m) => ({ default: m.WhatWeDo })));
+const BusinessConsulting = lazy(() =>
+  import('./pages/BusinessConsulting').then((m) => ({ default: m.BusinessConsulting }))
+);
+const MarketResearch = lazy(() =>
+  import('./pages/MarketResearch').then((m) => ({ default: m.MarketResearch }))
+);
+const AITraining = lazy(() => import('./pages/AITraining').then((m) => ({ default: m.AITraining })));
+const AIEnterpriseSolutions = lazy(() =>
+  import('./pages/AIEnterpriseSolutions').then((m) => ({ default: m.AIEnterpriseSolutions }))
+);
+const Industries = lazy(() => import('./pages/Industries').then((m) => ({ default: m.Industries })));
+const LifeSciences = lazy(() =>
+  import('./pages/LifeSciences').then((m) => ({ default: m.LifeSciences }))
+);
+const WhereWeWork = lazy(() =>
+  import('./pages/WhereWeWork').then((m) => ({ default: m.WhereWeWork }))
+);
+const HowWeWork = lazy(() => import('./pages/HowWeWork').then((m) => ({ default: m.HowWeWork })));
+const Explore = lazy(() => import('./pages/Explore').then((m) => ({ default: m.Explore })));
+const Insights = lazy(() => import('./pages/Insights').then((m) => ({ default: m.Insights })));
+const Contact = lazy(() => import('./pages/Contact').then((m) => ({ default: m.Contact })));
 
 const PageRouter: React.FC = () => {
   const { currentPath } = useNavigation();
 
-  // Normalize path without trailing slash (except root)
-  const normalizedPath = currentPath.length > 1 && currentPath.endsWith('/')
-    ? currentPath.slice(0, -1)
-    : currentPath;
+  const normalizedPath =
+    currentPath.length > 1 && currentPath.endsWith('/') ? currentPath.slice(0, -1) : currentPath;
 
   switch (normalizedPath) {
     case '/':
@@ -57,7 +68,6 @@ const PageRouter: React.FC = () => {
     case '/contact':
       return <Contact />;
     default:
-      // Graceful fallback to Home for unknown paths
       return <Home />;
   }
 };
@@ -65,10 +75,19 @@ const PageRouter: React.FC = () => {
 export function App() {
   return (
     <NavigationProvider>
-      <div className="min-h-screen bg-[var(--paper)] text-[var(--ink)] flex flex-col selection:bg-[var(--accent)] selection:text-white">
+      <div className="flex min-h-screen flex-col bg-[var(--color-ground)] text-[var(--color-ink)] selection:bg-[var(--color-accent)] selection:text-[var(--color-ground-deep)]">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-edge focus:bg-[var(--color-accent)] focus:px-5 focus:py-3 focus:text-body-sm focus:text-[var(--color-ground-deep)]"
+        >
+          Skip to content
+        </a>
         <Navigation />
-        <main className="flex-grow">
-          <PageRouter />
+        <main id="main" className="flex-grow">
+          {/* Reserves height so a chunk swap cannot shift layout (CLS budget 0.02). */}
+          <Suspense fallback={<div className="min-h-screen" aria-busy="true" />}>
+            <PageRouter />
+          </Suspense>
         </main>
         <Footer />
       </div>

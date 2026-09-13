@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowRight, Layers, Building2, BookOpen, Cpu, CheckCircle2, Sparkles, Activity, ShieldCheck } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 
 interface EngineStage {
@@ -8,204 +8,184 @@ interface EngineStage {
   name: string;
   discipline: string;
   subpage: string;
-  input: string;
-  process: string;
-  output: string;
-  tag: string;
+  from: string;
+  method: string;
+  to: string;
 }
 
 const ENGINE_STAGES: EngineStage[] = [
   {
     id: 'research',
     step: '01',
-    name: 'Empirical Research',
+    name: 'Empirical research',
     discipline: 'Market Research',
     subpage: '/what-we-do/market-research',
-    input: 'Uncertain market signals, regulatory variances, distributor ambiguity',
-    process: 'Primary quantitative & qualitative fieldwork across 45 African markets',
-    output: 'Audited market realities, KOL influence mapping, verified pricing structures',
-    tag: 'Ground Truth'
+    from: 'Uncertain market signals, regulatory variance, distributor ambiguity',
+    method: 'Primary quantitative and qualitative fieldwork across African markets',
+    to: 'Verified market realities, KOL influence mapping, pricing structures',
   },
   {
     id: 'strategy',
     step: '02',
-    name: 'Corporate Strategy',
+    name: 'Corporate strategy',
     discipline: 'Business Consulting',
     subpage: '/what-we-do/business-consulting',
-    input: 'Empirical market intelligence & institutional baseline capabilities',
-    process: 'Target operating model formulation, growth modeling & policy harmonization',
-    output: 'Operational roadmaps, market-entry playbooks & regulatory dossiers',
-    tag: 'Decision Matrix'
-  },
-  {
-    id: 'capability',
-    step: '03',
-    name: 'Human Capability',
-    discipline: 'AI Training & Digital Literacy',
-    subpage: '/what-we-do/ai-training',
-    input: 'Executive leadership goals, functional workflows & workforce skill gaps',
-    process: 'Board masterclasses, clinical AI enablement & internal champion labs',
-    output: 'Institutional fluency, certified AI practitioners & internal self-sufficiency',
-    tag: 'Human Adoption'
+    from: 'Empirical market intelligence and institutional baseline capability',
+    method: 'Target operating model design, growth modelling, policy harmonisation',
+    to: 'Operational roadmaps, market-entry playbooks, regulatory dossiers',
   },
   {
     id: 'technology',
-    step: '04',
-    name: 'Production AI Systems',
+    step: '03',
+    name: 'Production systems',
     discipline: 'AI Enterprise Solutions',
     subpage: '/what-we-do/ai-enterprise-solutions',
-    input: 'Proprietary enterprise documents, clinical records & ERP/HIS pipelines',
-    process: 'Sovereign private LLM deployment, NLP document extractors & automated RPA',
-    output: 'Production software architecture, secure on-premises/cloud pipelines',
-    tag: 'Sovereign Tech'
+    from: 'Enterprise documents, clinical records, ERP and HIS pipelines',
+    method: 'Private model deployment, document extraction, process automation',
+    to: 'Production architecture built for secure on-premises or cloud operation',
+  },
+  {
+    id: 'capability',
+    step: '04',
+    name: 'Human capability',
+    discipline: 'AI Training',
+    subpage: '/what-we-do/ai-training',
+    from: 'Executive goals, functional workflows, workforce skill gaps',
+    method: 'Board briefings, applied function-specific training, champion programmes',
+    to: 'Institutional fluency and internal practitioners who can carry it forward',
   },
   {
     id: 'adoption',
     step: '05',
-    name: 'Operational Embedment',
-    discipline: 'Cross-Pillar Governance',
+    name: 'Operational embedment',
+    discipline: 'Cross-pillar governance',
     subpage: '/how-we-work',
-    input: 'Production systems & trained functional workforces',
-    process: 'Change management, weekly sprint retrospectives & security audits',
-    output: 'Zero system abandonment, permanent operational routines established',
-    tag: 'Change Rigor'
+    from: 'Deployed systems and trained functional teams',
+    method: 'Change management, review cycles, governance and security audit',
+    to: 'Routines designed to hold after the engagement ends',
   },
   {
     id: 'impact',
     step: '06',
-    name: 'Measurable Impact',
-    discipline: 'Executive Outcomes',
+    name: 'Measurable impact',
+    discipline: 'Outcomes',
     subpage: '/explore',
-    input: 'Live client operations across African commercial corridors',
-    process: 'KPI tracking, commercial margin expansion & clinical quality indicators',
-    output: 'Defensible African market leadership & sovereign technological independence',
-    tag: 'African Scale'
-  }
+    from: 'Live operations across commercial and clinical corridors',
+    method: 'Indicator tracking against the success criteria set at Discovery',
+    to: 'Evidence that feeds the next question — the loop closes here',
+  },
 ];
 
 export const EngineVisualSpine: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { navigate } = useNavigation();
-  const [activeStageId, setActiveStageId] = useState<string>('research');
+  const [activeId, setActiveId] = useState<string>('research');
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const activeStage = ENGINE_STAGES.find((s) => s.id === activeStageId) || ENGINE_STAGES[0];
+  const activeIndex = ENGINE_STAGES.findIndex((s) => s.id === activeId);
+  const active = ENGINE_STAGES[activeIndex] ?? ENGINE_STAGES[0];
+
+  // Arrow keys walk the chain — the order is the argument, so it should be navigable.
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const delta = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (!delta) return;
+    e.preventDefault();
+    const next = (i + delta + ENGINE_STAGES.length) % ENGINE_STAGES.length;
+    setActiveId(ENGINE_STAGES[next].id);
+    refs.current[next]?.focus();
+  };
 
   return (
-    <div className={`border border-[var(--line)] bg-[var(--paper)] rounded-[2px] overflow-hidden ${className}`}>
-      {/* Engine Header Bar */}
-      <div className="p-5 border-b border-[var(--line)] bg-[var(--paper-2)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-            THE INTEGRATED VALUE CHAIN
-          </div>
-          <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-            Research → Strategy → Capability → Technology → Adoption → Impact
-          </h3>
-        </div>
-        <div className="font-mono text-xs text-[var(--ink-3)] bg-[var(--paper)] px-3 py-1.5 border border-[var(--line)] rounded-[2px] self-start sm:self-auto">
-          Single Institutional Accountability
-        </div>
-      </div>
-
-      {/* Horizontal Interactive Visual Spine Rail */}
-      <div className="p-6 sm:p-8 bg-[var(--paper)] border-b border-[var(--line)]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 relative">
-          {ENGINE_STAGES.map((stage, idx) => {
-            const isSelected = stage.id === activeStageId;
-            return (
+    <div className={className}>
+      <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6" role="tablist" aria-label="The value chain">
+        {ENGINE_STAGES.map((s, i) => {
+          const on = s.id === activeId;
+          const past = i < activeIndex;
+          return (
+            <li key={s.id} className="relative">
               <button
-                key={stage.id}
-                onClick={() => setActiveStageId(stage.id)}
-                className={`p-3.5 text-left border rounded-[2px] transition-all cursor-pointer relative group flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-[var(--paper-2)] border-[var(--accent)] shadow-sm ring-1 ring-[var(--accent)]'
-                    : 'bg-[var(--paper)] border-[var(--line)] hover:border-[var(--ink-3)]'
+                ref={(el) => { refs.current[i] = el; }}
+                role="tab"
+                aria-selected={on}
+                tabIndex={on ? 0 : -1}
+                onClick={() => setActiveId(s.id)}
+                onKeyDown={(e) => onKeyDown(e, i)}
+                className={`group relative w-full cursor-pointer border-l-2 pl-5 pb-8 pt-6 pr-4 text-left transition-colors lg:border-l-0 lg:border-t-2 lg:pl-0 lg:pr-6 lg:pt-8 ${
+                  on
+                    ? 'border-[var(--color-accent)]'
+                    : past
+                      ? 'border-[var(--color-line-strong)] hover:border-[var(--color-accent-2)]'
+                      : 'border-[var(--color-line)] hover:border-[var(--color-line-strong)]'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-mono text-xs font-bold text-[var(--accent)]">
-                      {stage.step}
-                    </span>
-                    <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 rounded-[1px] bg-[var(--accent-soft)] text-[var(--accent)] font-semibold">
-                      {stage.tag}
-                    </span>
-                  </div>
-                  <div className="font-display font-semibold text-sm text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors leading-tight">
-                    {stage.name}
-                  </div>
-                </div>
-
-                <div className="mt-3 pt-2 border-t border-[var(--line)] font-mono text-[10px] text-[var(--ink-3)]">
-                  {stage.discipline}
-                </div>
+                {/* The node sits on the rail itself. */}
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-0 top-6 h-2 w-2 -translate-x-[5px] rounded-full transition-colors lg:left-0 lg:top-0 lg:-translate-x-0 lg:-translate-y-[5px] ${
+                    on
+                      ? 'bg-[var(--color-accent)]'
+                      : past
+                        ? 'bg-[var(--color-line-strong)]'
+                        : 'bg-[var(--color-line-2)]'
+                  }`}
+                />
+                <span className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-ink-3)]">
+                  {s.step}
+                </span>
+                <span
+                  className={`mt-2 block text-h5 transition-colors ${
+                    on ? 'text-[var(--color-ink-strong)]' : 'text-[var(--color-ink-2)] group-hover:text-[var(--color-ink)]'
+                  }`}
+                >
+                  {s.name}
+                </span>
+                <span className="mt-1.5 block text-caption text-[var(--color-ink-3)]">{s.discipline}</span>
               </button>
-            );
-          })}
+            </li>
+          );
+        })}
+      </ol>
+
+      {/* Detail reads as editorial prose, not three stacked boxes. */}
+      <div className="mt-12 grid grid-cols-1 gap-x-14 gap-y-8 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <p className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-accent)]">
+            Stage {active.step} of 06
+          </p>
+          <h3 className="mt-3 text-h4">{active.name}</h3>
+          <button
+            onClick={() => navigate(active.subpage)}
+            className="group mt-6 inline-flex cursor-pointer items-center gap-2 text-body-sm text-[var(--color-accent)] hover:text-[var(--color-accent-2)]"
+          >
+            {active.discipline}
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+          </button>
         </div>
-      </div>
 
-      {/* Deep Stage Inspector View */}
-      <div className="p-6 sm:p-8 bg-[var(--paper-2)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left: Stage Dynamics (7 cols) */}
-          <div className="lg:col-span-7 space-y-4 font-body">
-            <div className="flex items-center space-x-2 font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-wider">
-              <span>Phase {activeStage.step} of 06</span>
-              <span>·</span>
-              <span>{activeStage.discipline}</span>
-            </div>
-
-            <h4 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-strong)]">
-              {activeStage.name}
-            </h4>
-
-            {/* Input -> Process -> Output Visual Pipeline */}
-            <div className="space-y-3 pt-2">
-              <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] font-mono text-xs">
-                <span className="text-[var(--ink-3)] uppercase block text-[10px] mb-0.5 font-semibold">
-                  Incoming Raw Input:
-                </span>
-                <span className="text-[var(--ink)]">{activeStage.input}</span>
-              </div>
-
-              <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] font-mono text-xs">
-                <span className="text-[var(--accent)] uppercase block text-[10px] mb-0.5 font-semibold">
-                  MindCraft Core Rigor & Process:
-                </span>
-                <span className="text-[var(--ink-strong)] font-medium">{activeStage.process}</span>
-              </div>
-
-              <div className="p-3 bg-[var(--accent-soft)]/60 border border-[var(--accent)]/40 rounded-[2px] font-mono text-xs">
-                <span className="text-[var(--accent)] uppercase block text-[10px] mb-0.5 font-semibold">
-                  Tangible Hand-Off Output:
-                </span>
-                <span className="text-[var(--ink-strong)] font-semibold">{activeStage.output}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Cross-Pillar Link & Next Step (5 cols) */}
-          <div className="lg:col-span-5 p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider text-xs pb-2 border-b border-[var(--line)]">
-                Why Continuity Outperforms Fragmented Vendors
-              </div>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                When research, strategy, capability, and technology are split between separate firms, valuable context leaks out at every transition. MindCraft holds single-point accountability for the full loop.
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-[var(--line)] flex items-center justify-between">
-              <button
-                onClick={() => navigate(activeStage.subpage)}
-                className="inline-flex items-center space-x-2 text-xs font-mono font-semibold text-[var(--accent)] hover:underline cursor-pointer"
+        <dl className="lg:col-span-7">
+          {[
+            ['From', active.from],
+            ['Method', active.method],
+            ['To', active.to],
+          ].map(([k, v], i) => (
+            <div
+              key={k}
+              className={`grid grid-cols-1 gap-1 py-4 sm:grid-cols-12 sm:gap-6 ${
+                i > 0 ? 'border-t border-[var(--color-line)]' : ''
+              }`}
+            >
+              <dt className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)] sm:col-span-3">
+                {k}
+              </dt>
+              <dd
+                className={`sm:col-span-9 ${
+                  k === 'To' ? 'text-body text-[var(--color-ink-strong)]' : 'text-body text-[var(--color-ink-2)]'
+                }`}
               >
-                <span>Explore {activeStage.discipline} Details</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+                {v}
+              </dd>
             </div>
-          </div>
-        </div>
+          ))}
+        </dl>
       </div>
     </div>
   );

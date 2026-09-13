@@ -53,7 +53,7 @@ export const AfricaIntelligence: React.FC = () => {
                   onClick={() => setActiveRegionId(region.id)}
                   className={`px-4 py-2 text-xs font-mono tracking-wider uppercase font-medium rounded-[2px] transition-all cursor-pointer border ${
                     isSelected
-                      ? 'bg-[var(--accent)] text-white border-[var(--accent)] shadow-sm'
+                      ? 'bg-[var(--accent)] text-[var(--color-ground-deep)] border-[var(--accent)]'
                       : 'bg-[var(--paper-2)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                   }`}
                 >

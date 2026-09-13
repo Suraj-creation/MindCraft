@@ -46,7 +46,7 @@ export const IntellectualPerspective: React.FC<IntellectualPerspectiveProps> = (
                 onClick={() => setSelectedPathwayId(p.id)}
                 className={`p-3 text-left rounded-[2px] transition-all cursor-pointer border ${
                   isSelected
-                    ? 'bg-[var(--surface)] border-[var(--accent)] text-[var(--ink-strong)] shadow-xs'
+                    ? 'bg-[var(--surface)] border-[var(--accent)] text-[var(--ink-strong)]'
                     : 'bg-[var(--paper)] border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                 }`}
               >
@@ -75,7 +75,7 @@ export const IntellectualPerspective: React.FC<IntellectualPerspectiveProps> = (
 
             <button
               onClick={() => onOpenConversationWithContext(`Mandate: ${activePathway.role}`)}
-              className="inline-flex items-center space-x-2 px-4 py-2 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors cursor-pointer self-start sm:self-auto"
+              className="inline-flex items-center space-x-2 px-4 py-2 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--color-ground-deep)] bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors cursor-pointer self-start sm:self-auto"
             >
               <span>Discuss This Scope</span>
               <ArrowRight className="w-3.5 h-3.5" />

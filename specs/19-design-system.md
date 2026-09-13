@@ -1,6 +1,25 @@
 # 19 — Design System
 
-> Parent: `design-principles.md` (philosophy) + `requirements.md`. This is the implementation-grade token & component spec for the **"Editorial intelligence report"** language. Stack: **React 19 + Vite + Tailwind v4 + `motion` + lucide-react**. Tailwind v4 uses CSS-first config via `@theme` in `src/index.css`.
+> ## ⚠️ SUPERSEDED — do not implement from this file
+>
+> **The authoritative visual system is `DESIGN.md` at the repo root, with `CLAUDE.md` §4–§6.**
+> This document predates both and conflicts with them on several points. It is retained
+> only as a record of the original token and component thinking.
+>
+> Known contradictions, so nobody re-introduces them:
+>
+> | This file says | Actual system |
+> |---|---|
+> | Display **Fraunces**, body **Inter**, mono **IBM Plex Mono** | **Bricolage Grotesque · Literata · Spline Sans Mono.** Fraunces, Inter and IBM Plex are on CLAUDE.md's banned list as AI-monoculture defaults. |
+> | Warm-paper palette; `ink-500 #5B6470`, `ink-300 #9AA3AD`, `surface #FFFFFF` | Dark **volcanic-forest** ground with warm-ivory ink. Those greys are cool blue-grey (hue ≈210) and pure white, both of which the system forbids. |
+> | `--radius-1: 4px` | **3px** |
+> | Hex values throughout | **OKLCH** throughout |
+> | Accordions animate `height` | `grid-template-rows: 0fr → 1fr` — height animation is banned |
+>
+> Ten other specs cite this file's token names. Where they do, read the value from
+> `DESIGN.md` instead. Contrast is machine-verified: `node scripts/check-contrast.mjs`.
+
+> Parent: `design-principles.md` (philosophy) + `requirements.md`. This was the implementation-grade token & component spec for the **"Editorial intelligence report"** language. Stack: **React 19 + Vite + Tailwind v4 + `motion` + lucide-react**. Tailwind v4 uses CSS-first config via `@theme` in `src/index.css`.
 
 ---
 

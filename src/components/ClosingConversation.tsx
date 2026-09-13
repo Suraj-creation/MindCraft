@@ -34,7 +34,7 @@ export const ClosingConversation: React.FC<ClosingConversationProps> = ({
             <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <button
                 onClick={onOpenConversation}
-                className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors cursor-pointer shadow-sm"
+                className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--color-ground-deep)] bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors cursor-pointer"
               >
                 <span>Initiate Briefing</span>
                 <ArrowUpRight className="w-4 h-4" />

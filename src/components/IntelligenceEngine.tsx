@@ -48,7 +48,7 @@ export const IntelligenceEngine: React.FC = () => {
                     <span
                       className={`font-mono text-xs font-semibold px-2 py-0.5 rounded-[1px] ${
                         isSelected
-                          ? 'bg-[var(--accent)] text-white'
+                          ? 'bg-[var(--accent)] text-[var(--color-ground-deep)]'
                           : 'bg-[var(--line)] text-[var(--ink-2)]'
                       }`}
                     >

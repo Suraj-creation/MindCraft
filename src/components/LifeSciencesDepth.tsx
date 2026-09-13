@@ -56,7 +56,7 @@ export const LifeSciencesDepth: React.FC = () => {
                       aria-selected={isSelected}
                       className={`w-full text-left px-4 py-3 rounded-[2px] transition-all flex items-center justify-between border cursor-pointer ${
                         isSelected
-                          ? 'bg-[var(--surface)] border-[var(--accent)] text-[var(--ink-strong)] shadow-sm'
+                          ? 'bg-[var(--surface)] border-[var(--accent)] text-[var(--ink-strong)]'
                           : 'bg-[var(--paper)] border-[var(--line)] text-[var(--ink-2)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                       }`}
                     >

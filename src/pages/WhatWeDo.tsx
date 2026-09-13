@@ -1,302 +1,274 @@
 import React from 'react';
-import { ArrowUpRight, ArrowRight, Layers, Sparkles, Building2, BookOpen, Cpu, Activity, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { Section, Container, SectionHead } from '../components/layout/Section';
 import { EngineVisualSpine } from '../components/EngineVisualSpine';
+
+/* Chain order, not source order. The sequence is the argument: research
+   informs strategy, strategy directs what gets built, training makes the
+   build hold. Positioning lines are the Corporate Profile's own words. */
+interface Pillar {
+  n: string;
+  name: string;
+  path: string;
+  positioning: string;
+  scope: string[];
+  handoff: string;
+}
+
+const PILLARS: Pillar[] = [
+  {
+    n: '01',
+    name: 'Market Research',
+    path: '/what-we-do/market-research',
+    positioning:
+      'Rigorous primary and secondary research that turns market complexity into decision-ready intelligence — purpose-built for Life Sciences and diversified industry clients operating in African and international markets.',
+    scope: [
+      'Primary quantitative and qualitative fieldwork',
+      'KOL and stakeholder network mapping',
+      'Competitive intelligence and pricing studies',
+      'Programme monitoring and impact evaluation',
+    ],
+    handoff: 'Hands strategy a verified baseline instead of an assumption.',
+  },
+  {
+    n: '02',
+    name: 'Business Consulting',
+    path: '/what-we-do/business-consulting',
+    positioning:
+      'Strategic and management advisory that helps organisations make better decisions, restructure for growth and execute change with confidence — grounded in Life Sciences and cross-industry practice.',
+    scope: [
+      'Corporate and business strategy formulation',
+      'Digital and AI transformation architecture',
+      'Target operating models and governance',
+      'Policy and regulatory compliance advisory',
+    ],
+    handoff: 'Decides what is worth building before anything is built.',
+  },
+  {
+    n: '03',
+    name: 'AI Enterprise Solutions',
+    path: '/what-we-do/ai-enterprise-solutions',
+    positioning:
+      'End-to-end design, build and integration of AI-powered systems that operationalise insight into everyday business workflows — from market intelligence platforms to patient- and customer-facing AI tools.',
+    scope: [
+      'Private LLM and retrieval implementations',
+      'Document and regulatory text extraction',
+      'Process automation across existing systems',
+      'Life-Sciences-specific pharmacovigilance tooling',
+    ],
+    handoff: 'Puts the decision into the workflow where the work happens.',
+  },
+  {
+    n: '04',
+    name: 'AI Training & Digital Literacy',
+    path: '/what-we-do/ai-training',
+    positioning:
+      'Practical, hands-on AI capability-building for individuals, teams and organisations — designed to build real AI literacy and internal champions, not just awareness.',
+    scope: [
+      'Executive briefings and strategy masterclasses',
+      'Function-specific workflows for commercial, clinical and finance teams',
+      'Responsible AI and data governance frameworks',
+      'Train-the-trainer and internal champion programmes',
+    ],
+    handoff: 'Leaves practitioners who can carry the system without us.',
+  },
+];
+
+/* The source defines itself by negation — "rather than four disconnected
+   vendors." That contrast is the argument for the chain, stated as a
+   structural difference, never as a claimed outcome. */
+const INTEGRATED = [
+  'Research is scoped against the decision it has to support.',
+  'Strategy is built on the fieldwork the same team ran.',
+  'Systems are designed around the bottleneck the research found.',
+  'Training is written against the system that was actually deployed.',
+];
+
+const linkCls =
+  'group inline-flex items-center gap-2 text-body-sm text-[var(--color-accent)] hover:text-[var(--color-accent-2)] cursor-pointer';
 
 export const WhatWeDo: React.FC = () => {
   const { navigate } = useNavigation();
 
   return (
-    <div className="space-y-0">
-      {/* ─────────────────────────────────────────────────────────────
-          EDITORIAL HEADER
-      ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
-            <span className="text-[var(--accent)] font-semibold">THE INTEGRATED CAPABILITY ENGINE</span>
-            <span>·</span>
-            <span>FOUR DISCIPLINES</span>
-            <span>·</span>
-            <span>ONE SYSTEM</span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-8 space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
-                An integrated intelligence engine.
+    <div>
+      {/* ── Header: the chain stated once, in full ─────────────────────── */}
+      <section className="pt-[var(--band-tight)] pb-[var(--band)]">
+        <Container width="wide">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <h1 className="rise text-h1" style={{ animationDelay: '0ms' }}>
+                One engine, from question to impact.
               </h1>
-              <p className="font-body text-lg sm:text-xl text-[var(--ink)] leading-relaxed max-w-3xl">
-                Most organizations require research to inform strategy, strategy to guide technology investments, and training to ensure sustainable operational adoption. MindCraft unifies these four disciplines into a continuous, accountable value chain.
+            </div>
+            <div className="rise lg:col-span-5 lg:pt-4" style={{ animationDelay: '120ms' }}>
+              <p className="measure text-lead text-[var(--color-ink-2)]">
+                Research informs strategy. Strategy directs what gets built. Training makes the build
+                hold. Four disciplines run as one accountable chain — not four vendors passing
+                documents between them.
               </p>
             </div>
-
-            <div className="lg:col-span-4 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider flex items-center space-x-2">
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>The Closed-Loop Feedback Flow</span>
-              </div>
-              <div className="space-y-2 text-[var(--ink-2)] border-t border-[var(--line)] pt-3 leading-relaxed">
-                <div><span className="text-[var(--accent)] font-bold">01 Research</span> fuels Strategy with ground-truth</div>
-                <div><span className="text-[var(--accent)] font-bold">02 Strategy</span> directs Solution architecture & ROI</div>
-                <div><span className="text-[var(--accent)] font-bold">03 Solutions</span> scale through Training & adoption</div>
-                <div><span className="text-[var(--accent)] font-bold">04 Training</span> surfaces new Research & edge cases</div>
-                <div className="text-[var(--accent)] font-semibold pt-1">→ Sovereign African Capability</div>
-              </div>
-            </div>
           </div>
-        </div>
+
+          {/* The chain, with its terminus. Numerals are information here:
+             the order carries the whole argument. */}
+          <ol className="rise mt-16 border-t border-[var(--color-line-2)]" style={{ animationDelay: '220ms' }}>
+            {PILLARS.map((p) => (
+              <li key={p.n}>
+                <button
+                  onClick={() => navigate(p.path)}
+                  className="group grid w-full cursor-pointer grid-cols-1 items-baseline gap-x-10 gap-y-2 border-b border-[var(--color-line)] py-6 text-left transition-colors hover:bg-[var(--color-raised)] lg:grid-cols-12"
+                >
+                  <span className="font-mono text-eyebrow text-[var(--color-accent)] lg:col-span-1">
+                    {p.n}
+                  </span>
+                  <span className="text-h5 text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-ink-strong)] lg:col-span-4">
+                    {p.name}
+                  </span>
+                  <span className="flex items-center justify-between gap-6 text-body-sm text-[var(--color-ink-3)] lg:col-span-7">
+                    {p.handoff}
+                    <ArrowRight className="h-3.5 w-3.5 shrink-0 text-[var(--color-line-strong)] opacity-0 transition-all duration-200 group-hover:translate-x-1 group-hover:opacity-100" />
+                  </span>
+                </button>
+              </li>
+            ))}
+            <li className="grid grid-cols-1 items-baseline gap-x-10 gap-y-2 border-b border-[var(--color-line)] py-6 lg:grid-cols-12">
+              <span className="font-mono text-eyebrow text-[var(--color-grass)] lg:col-span-1">05</span>
+              <span className="text-h5 text-[var(--color-ink-2)] lg:col-span-4">Measurable impact</span>
+              <span className="text-body-sm text-[var(--color-ink-3)] lg:col-span-7">
+                Evidence that feeds the next question — the chain closes and starts again.
+              </span>
+            </li>
+          </ol>
+        </Container>
       </section>
 
-      {/* ─────────────────────────────────────────────────────────────
-          THE 6-STAGE DELIVERY METHODOLOGY SPINE
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              END-TO-END METHODOLOGY
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              The 6-stage lifecycle from diagnostic to sovereign transfer.
-            </h2>
-          </div>
+      {/* ── The spine, stage by stage ──────────────────────────────────── */}
+      <Section tone="raised" band="normal" width="wide" rule>
+        <SectionHead
+          title="How an engagement moves down the chain."
+          lead="Six stages from first question to evidence. Select a stage to see what goes in, what happens and what comes out."
+          className="mb-14"
+        />
+        <EngineVisualSpine />
+      </Section>
 
-          <EngineVisualSpine />
+      {/* ── Each capability in depth — editorial blocks, not four cards ── */}
+      <Section band="loose" width="default" rule>
+        <h2 className="max-w-2xl text-h3">The four disciplines in detail.</h2>
+        <p className="measure mt-5 text-body text-[var(--color-ink-2)]">
+          Clients frequently engage across two or more at once. The integration is the point — but no
+          part of the chain is mandatory to start.
+        </p>
+
+        <div className="mt-16">
+          {PILLARS.map((p) => (
+            <article
+              key={p.n}
+              className="grid grid-cols-1 gap-x-12 gap-y-6 border-t border-[var(--color-line)] py-12 lg:grid-cols-12"
+            >
+              <div className="lg:col-span-4">
+                <span className="font-mono text-eyebrow text-[var(--color-accent)]">{p.n}</span>
+                <h3 className="mt-3 text-h4">{p.name}</h3>
+                <button onClick={() => navigate(p.path)} className={`${linkCls} mt-6`}>
+                  The full capability
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+                </button>
+              </div>
+
+              <div className="lg:col-span-8">
+                <p className="measure text-lead text-[var(--color-ink)]">{p.positioning}</p>
+                <ul className="mt-8 grid grid-cols-1 gap-x-12 sm:grid-cols-2">
+                  {p.scope.map((s) => (
+                    <li
+                      key={s}
+                      className="border-t border-[var(--color-line)] py-3 text-body-sm text-[var(--color-ink-2)]"
+                    >
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
         </div>
-      </section>
+      </Section>
 
-      {/* ─────────────────────────────────────────────────────────────
-          THE FOUR CAPABILITIES DETAILED CARDS GRID
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              THE FOUR PILLARS
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Deep-dive into each specialized discipline.
-            </h2>
-          </div>
+      {/* ── Why one partner: a structural contrast, not a scorecard ────── */}
+      <Section tone="ground-2" band="normal" width="default" rule>
+        <SectionHead
+          title="Why the chain is the product."
+          lead="The alternative is not a worse partner. It is four partners, each accountable for a different fragment of the same decision."
+          className="mb-14"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Pillar 1: Business Consulting */}
-            <div className="p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-6 hover:border-[var(--accent)] transition-colors flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-wider">
-                    PILLAR 01 · STRATEGY
-                  </span>
-                  <Building2 className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
-                  Business Consulting
-                </h3>
-                <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                  Turn complexity into decisive operational roadmaps. Corporate strategy, digital transformation, organizational restructuring, process engineering, and public policy advisory.
-                </p>
-
-                <div className="pt-2 font-mono text-xs text-[var(--ink-3)] space-y-1.5">
-                  <div>✓ Corporate & Business Strategy Formulation</div>
-                  <div>✓ Digital & AI Transformation Architecture</div>
-                  <div>✓ Target Operating Models & Governance</div>
-                  <div>✓ Policy & Regulatory Compliance Advisory</div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate('/what-we-do/business-consulting')}
-                className="w-full py-3 px-4 bg-[var(--paper)] hover:bg-[var(--accent-soft)] border border-[var(--line)] hover:border-[var(--accent)] text-xs font-mono text-[var(--accent)] font-semibold rounded-[2px] transition-colors flex items-center justify-between cursor-pointer"
-              >
-                <span>View Dedicated Business Consulting Page</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Pillar 2: Market Research */}
-            <div className="p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-6 hover:border-[var(--accent)] transition-colors flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-wider">
-                    PILLAR 02 · EMPIRICAL INTELLIGENCE
-                  </span>
-                  <Layers className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
-                  Market Research
-                </h3>
-                <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                  Ground-truth intelligence across 45 African markets. Primary quantitative and qualitative fieldwork, Key Opinion Leader (KOL) mapping, tender pricing scans, and impact evaluations.
-                </p>
-
-                <div className="pt-2 font-mono text-xs text-[var(--ink-3)] space-y-1.5">
-                  <div>✓ Primary Quantitative & Qualitative Fieldwork</div>
-                  <div>✓ KOL & Stakeholder Network Mapping</div>
-                  <div>✓ Competitive Intelligence & Pricing Audits</div>
-                  <div>✓ Program Monitoring & Impact Evaluation</div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate('/what-we-do/market-research')}
-                className="w-full py-3 px-4 bg-[var(--paper)] hover:bg-[var(--accent-soft)] border border-[var(--line)] hover:border-[var(--accent)] text-xs font-mono text-[var(--accent)] font-semibold rounded-[2px] transition-colors flex items-center justify-between cursor-pointer"
-              >
-                <span>View Dedicated Market Research Page</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Pillar 3: AI Training & Digital Literacy */}
-            <div className="p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-6 hover:border-[var(--accent)] transition-colors flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-wider">
-                    PILLAR 03 · INSTITUTIONAL CAPABILITY
-                  </span>
-                  <BookOpen className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
-                  AI Training & Digital Literacy
-                </h3>
-                <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                  Upskill executives and technical workforces so AI adoption sticks. High-impact masterclasses, function-specific AI workflows, ethics governance, and internal champions networks.
-                </p>
-
-                <div className="pt-2 font-mono text-xs text-[var(--ink-3)] space-y-1.5">
-                  <div>✓ Executive AI Briefings & Strategy Masterclasses</div>
-                  <div>✓ Function-Specific Workflows (Commercial, Clinical, Finance)</div>
-                  <div>✓ Responsible AI & Data Governance Frameworks</div>
-                  <div>✓ Internal Train-the-Trainer Programs</div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate('/what-we-do/ai-training')}
-                className="w-full py-3 px-4 bg-[var(--paper)] hover:bg-[var(--accent-soft)] border border-[var(--line)] hover:border-[var(--accent)] text-xs font-mono text-[var(--accent)] font-semibold rounded-[2px] transition-colors flex items-center justify-between cursor-pointer"
-              >
-                <span>View Dedicated AI Training Page</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Pillar 4: AI Enterprise Solutions */}
-            <div className="p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-6 hover:border-[var(--accent)] transition-colors flex flex-col justify-between group">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-[var(--accent)] uppercase tracking-wider">
-                    PILLAR 04 · PRODUCTION SYSTEMS
-                  </span>
-                  <Cpu className="w-5 h-5 text-[var(--accent)]" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
-                  AI Enterprise Solutions
-                </h3>
-                <p className="font-body text-sm text-[var(--ink-2)] leading-relaxed">
-                  Engineered production AI architectures. Private on-premise/cloud models, automated document extraction, conversational intelligence, and specialized Life Sciences AI solutions.
-                </p>
-
-                <div className="pt-2 font-mono text-xs text-[var(--ink-3)] space-y-1.5">
-                  <div>✓ Private Sovereign LLM & RAG Implementations</div>
-                  <div>✓ Intelligent Document & Regulatory NLP Extraction</div>
-                  <div>✓ Robotic Process Automation (RPA) Pipelines</div>
-                  <div>✓ Life Sciences-Specific Pharmacovigilance AI</div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => navigate('/what-we-do/ai-enterprise-solutions')}
-                className="w-full py-3 px-4 bg-[var(--paper)] hover:bg-[var(--accent-soft)] border border-[var(--line)] hover:border-[var(--accent)] text-xs font-mono text-[var(--accent)] font-semibold rounded-[2px] transition-colors flex items-center justify-between cursor-pointer"
-              >
-                <span>View Dedicated AI Solutions Page</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          WHY THE INTEGRATED MODEL MATTERS
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              STRATEGIC ADVANTAGE
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Why the integrated engine outperforms fragmented vendors.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-6 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="font-mono text-xs text-[var(--ink-3)] font-semibold uppercase">The Fragmented Multi-Vendor Model</div>
-              <ul className="font-body text-xs text-[var(--ink-2)] space-y-2">
-                <li className="flex items-start space-x-2">
-                  <span className="text-red-600 font-bold">✕</span>
-                  <span>Market research firm delivers an academic report with zero operational roadmap.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-red-600 font-bold">✕</span>
-                  <span>Strategy consultants design a high-level deck detached from local field realities.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-red-600 font-bold">✕</span>
-                  <span>Tech vendors deploy generic software tools that staff cannot operate or maintain.</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-6 bg-[var(--paper)] border border-[var(--accent)]/40 rounded-[2px] space-y-3 bg-[var(--accent-soft)]/20">
-              <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase">The MindCraft Single-Accountability Model</div>
-              <ul className="font-body text-xs text-[var(--ink)] space-y-2">
-                <li className="flex items-start space-x-2">
-                  <span className="text-[var(--accent)] font-bold">✓</span>
-                  <span>Primary research directly grounds strategy and eliminates unverified assumptions.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-[var(--accent)] font-bold">✓</span>
-                  <span>AI technology is custom engineered around real clinical and commercial bottlenecks.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-[var(--accent)] font-bold">✓</span>
-                  <span>Comprehensive executive upskilling ensures permanent institutional self-sufficiency.</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Band */}
-      <section className="py-16 bg-[var(--ink-strong)] text-[var(--paper)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-2 max-w-xl">
-            <h2 className="font-display text-3xl font-bold text-white">
-              Scope an integrated engagement.
-            </h2>
-            <p className="font-body text-sm text-[var(--paper-2)]/80">
-              Combine any 2 or more capabilities for a seamless, unified advisory and engineering lifecycle.
+        <div className="grid grid-cols-1 gap-x-16 gap-y-12 border-t border-[var(--color-line-2)] pt-10 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <h3 className="text-h5 text-[var(--color-ink-3)]">Four disconnected vendors</h3>
+            <p className="measure mt-5 text-body text-[var(--color-ink-3)]">
+              A research firm hands over a report with no route to a decision. Strategy arrives as a
+              deck detached from field reality. A technology vendor ships tools nobody internally can
+              operate. Training is generic, and adoption stalls after the workshop. Each is
+              accountable for its own fragment; nobody is accountable for the decision.
             </p>
           </div>
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate('/explore')}
-              className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--paper)] bg-white/10 hover:bg-white/15 border border-white/20 rounded-[2px] transition-colors cursor-pointer"
-            >
-              Compose in Explorer
-            </button>
-            <button
-              onClick={() => navigate('/contact')}
-              className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Start a Conversation
+
+          <div className="lg:col-span-7">
+            <h3 className="text-h5 text-[var(--color-ink-strong)]">One integrated engagement</h3>
+            <ul className="mt-5">
+              {INTEGRATED.map((s) => (
+                <li
+                  key={s}
+                  className="border-t border-[var(--color-line)] py-4 text-body text-[var(--color-ink)] first:border-t-0 first:pt-0"
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── Closing ────────────────────────────────────────────────────── */}
+      <Section tone="deep" band="normal" width="default" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h2 className="text-h2">Scope an integrated engagement.</h2>
+            <p className="measure mt-6 text-lead text-[var(--color-ink-2)]">
+              Start anywhere on the chain. Tell us the decision you are facing and we will say
+              honestly which capabilities it actually needs.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <button
+                onClick={() => navigate('/contact')}
+                className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]"
+              >
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+              </button>
+              <button
+                onClick={() => navigate('/explore')}
+                className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge border border-[var(--color-line-2)] px-7 py-4 text-body-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-line-strong)]"
+              >
+                Compose it in the Explorer
+                <ArrowRight className="h-4 w-4 text-[var(--color-accent)] transition-transform duration-200 group-hover:translate-x-1" />
+              </button>
+            </div>
+          </div>
+
+          <div className="border-t border-[var(--color-line)] pt-8 lg:col-span-4 lg:col-start-9 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+            <p className="text-body text-[var(--color-ink-2)]">
+              Deepest sector expertise sits in Life Sciences, where all four capabilities run against
+              regulatory, clinical and commercial context at once.
+            </p>
+            <button onClick={() => navigate('/industries/life-sciences')} className={`${linkCls} mt-6`}>
+              The Life Sciences practice
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </div>
         </div>
-      </section>
+      </Section>
     </div>
   );
 };

@@ -75,7 +75,7 @@ export const StrategicExplorer: React.FC<StrategicExplorerProps> = ({
         </div>
 
         {/* 3-Slot Composer Shell */}
-        <div className="border border-[var(--line-2)] bg-[var(--surface)] p-6 sm:p-8 lg:p-10 rounded-[2px] shadow-sm space-y-8">
+        <div className="border border-[var(--line-2)] bg-[var(--surface)] p-6 sm:p-8 lg:p-10 rounded-[2px] space-y-8">
           {/* Active Formula Pill */}
           <div className="flex flex-wrap items-center gap-3 p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] font-mono text-xs text-[var(--ink-strong)]">
             <span className="text-[var(--ink-3)] uppercase tracking-wider">Active Formula:</span>
@@ -106,7 +106,7 @@ export const StrategicExplorer: React.FC<StrategicExplorerProps> = ({
                     onClick={() => setSelectedIndustry(ind)}
                     className={`w-full text-left px-3.5 py-2 text-xs font-mono rounded-[2px] border transition-all cursor-pointer ${
                       selectedIndustry === ind
-                        ? 'bg-[var(--accent)] text-white border-[var(--accent)] font-medium shadow-xs'
+                        ? 'bg-[var(--accent)] text-[var(--color-ground-deep)] border-[var(--accent)] font-medium'
                         : 'bg-[var(--paper)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                     }`}
                   >
@@ -128,7 +128,7 @@ export const StrategicExplorer: React.FC<StrategicExplorerProps> = ({
                     onClick={() => setSelectedGeography(geo)}
                     className={`w-full text-left px-3.5 py-2 text-xs font-mono rounded-[2px] border transition-all cursor-pointer ${
                       selectedGeography === geo
-                        ? 'bg-[var(--accent)] text-white border-[var(--accent)] font-medium shadow-xs'
+                        ? 'bg-[var(--accent)] text-[var(--color-ground-deep)] border-[var(--accent)] font-medium'
                         : 'bg-[var(--paper)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                     }`}
                   >
@@ -150,7 +150,7 @@ export const StrategicExplorer: React.FC<StrategicExplorerProps> = ({
                     onClick={() => setSelectedCapability(cap)}
                     className={`w-full text-left px-3.5 py-2 text-xs font-mono rounded-[2px] border transition-all cursor-pointer ${
                       selectedCapability === cap
-                        ? 'bg-[var(--accent)] text-white border-[var(--accent)] font-medium shadow-xs'
+                        ? 'bg-[var(--accent)] text-[var(--color-ground-deep)] border-[var(--accent)] font-medium'
                         : 'bg-[var(--paper)] text-[var(--ink-2)] border-[var(--line)] hover:border-[var(--line-2)] hover:text-[var(--ink-strong)]'
                     }`}
                   >

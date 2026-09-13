@@ -93,7 +93,7 @@ export const ConversationModal: React.FC<ConversationModalProps> = ({
                     setSubmitted(false);
                     onClose();
                   }}
-                  className="px-6 py-2.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] cursor-pointer"
+                  className="px-6 py-2.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--color-ground-deep)] bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] cursor-pointer"
                 >
                   Return to Exploration
                 </button>
@@ -204,7 +204,7 @@ export const ConversationModal: React.FC<ConversationModalProps> = ({
                 </div>
                 <button
                   type="submit"
-                  className="inline-flex items-center space-x-2 px-5 py-2.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] cursor-pointer"
+                  className="inline-flex items-center space-x-2 px-5 py-2.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--color-ground-deep)] bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] cursor-pointer"
                 >
                   <span>Submit Briefing</span>
                   <ArrowRight className="w-3.5 h-3.5" />

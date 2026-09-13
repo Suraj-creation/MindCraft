@@ -59,7 +59,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConversation }) => {
               <button
                 id="hero-primary-cta"
                 onClick={onOpenConversation}
-                className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm cursor-pointer"
+                className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--color-ground-deep)] bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors cursor-pointer"
               >
                 <span>Start a Conversation</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -100,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConversation }) => {
 
           {/* Right Column (5 cols): Architectural Visual Anchor */}
           <div className="lg:col-span-5 relative">
-            <div className="relative border border-[var(--line-2)] bg-[var(--paper-2)] p-2 shadow-sm rounded-[2px]">
+            <div className="relative border border-[var(--line-2)] bg-[var(--paper-2)] p-2 rounded-[2px]">
               <div className="overflow-hidden aspect-[4/3] relative">
                 <img
                   src="/assets/images/nairobi_architecture_1788983991343.jpg"

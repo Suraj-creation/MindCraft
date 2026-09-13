@@ -125,37 +125,40 @@ Credibility comes from: specialization, methodology, specificity, domain languag
 
 ### The material system
 
-MindCraft's visual material is **warm paper, ink, and a single earth accent** — the physical language of intelligence documents, research publications, and field reports. Not screens. Not UI chrome. Documents.
+MindCraft's visual material is **volcanic ground, ivory ink, and terracotta punctuation**.
 
-The three modes:
+Nairobi sits at 1,795m on the shoulder of the Rift Valley. The ground there is volcanic — dark, mineral, tinted toward the highland forest that grows on it. The soil around it is laterite: terracotta red. That is the palette. Not a mood board of Africa — the actual geology of the one place this firm is anchored to.
+
+**Why this replaced the warm-paper direction.** The previous system was warm ivory paper, charcoal and terracotta, justified as "the physical language of documents. Not screens." Three things were wrong with it. It had *no meaning argument* — every other element was justified by what MindCraft is, the colour only by what a physical object is. It *contradicted its own opening rule*, banning the "cream/coral/navy trinity" and then specifying warm ivory and terracotta, which is functionally cream and coral. And it *under-represented half the company*: two of four pillars build and deploy software, which a pure paper metaphor describes not at all. A deep mineral ground reads as both a field dossier and an instrument at work — and in a category where nearly every competitor ships a white page, it is the cheapest way to pass the recognition test.
+
+The surface ramp:
 
 | Mode | Background | Use |
 |---|---|---|
-| Paper (default) | Warm ivory | Body, sections, content |
-| Ink band | Deep warm charcoal | Emphasis; hero alternatives; CTA; the "engine" display |
-| Ink band 2 | Slightly lighter charcoal | Nested dark surfaces |
-
-A third surface (Paper-2) provides subtle variation within paper mode without switching modes entirely.
+| Ground (default) | Volcanic forest | Body, sections, content |
+| Ground-2 | Deeper forest | Alternate bands |
+| Ground-deep | Deepest | Terminal beats, closing CTA, footer |
+| Raised / Surface | Lifted forest | Panels, selected states, elevation without shadow |
 
 ### The accent
 
-One deliberate accent: **terracotta / sienna** (`oklch(0.555 0.132 44)`). Earth-toned, not coral, not orange, not red. Used for:
-- Active states, selected nodes, accent stripes
-- Key structural numbers (01 — 02 — 03 format)
+One deliberate accent: **terracotta / laterite** (`oklch(0.672 0.132 44)`), tuned bright for a dark ground. Used for:
+- Active states, selected nodes
+- Structural numerals where the sequence is real information
 - Primary CTA backgrounds
-- Emphasis rules / hairline separators on dark surfaces
-- Geographic dot markers
+- Geographic markers
 
-The accent is **scarce**. It must feel like punctuation, not background.
+The accent is **scarce**. It must feel like punctuation, not background. **Text on the accent is `--color-ground-deep`, never white** — white on this terracotta is 3.12:1 and fails.
+
+Two support tones carry data and annotation only, never chrome: **dry grass** (`--color-grass`) for numerals and figures, **highland green** (`--color-green`) for support marks.
 
 ### What makes MindCraft recognizable
-- Warm paper base (never cool gray, never pure white)
-- Strong type-based hierarchy (display grotesque + reading serif)
-- Hairline structure (1px rules, not card borders)
-- Ink bands as deliberate emphasis (not default dark sections)
-- Mono eyebrow labels with coordinates/indices
+- Deep mineral ground (never flat black, never a white page)
+- Strong type-based hierarchy (display grotesque + reading serif) with real range, reaching `--text-display`
+- Hairline structure in three weights by job, not card borders
 - Editorial asymmetry (not everything centered)
-- The terracotta accent used as a signature
+- Mono reserved strictly for data — coordinates, counts, sequence indices
+- The terracotta accent used as punctuation
 
 ---
 
@@ -165,54 +168,58 @@ The accent is **scarce**. It must feel like punctuation, not background.
 
 ### Semantic tokens (CSS custom properties)
 
+Registered in a Tailwind v4 `@theme` block in `src/index.css`, so every token is a real utility (`bg-ground`, `text-ink-2`) rather than an arbitrary value. Measured ratios against `--color-ground` are noted inline.
+
 ```css
-/* Paper surfaces */
---paper:       oklch(0.972 0.008 72);   /* page floor — warm ivory */
---paper-2:     oklch(0.945 0.012 68);   /* alt surface, subtle sections */
---surface:     oklch(0.988 0.006 75);   /* raised surface — use sparingly */
+/* Ground — volcanic black tinted toward forest green */
+--color-ground:       oklch(0.198 0.016 158);  /* page floor */
+--color-ground-2:     oklch(0.178 0.020 162);  /* deep band */
+--color-ground-deep:  oklch(0.162 0.022 162);  /* deepest — terminal beats, CTA */
+--color-raised:       oklch(0.238 0.020 158);
+--color-surface:      oklch(0.256 0.022 158);
+--color-surface-2:    oklch(0.300 0.024 158);
 
-/* Ink (text & borders) */
---ink:         oklch(0.235 0.014 55);   /* primary text */
---ink-strong:  oklch(0.175 0.016 52);   /* headlines, strongest text */
---ink-2:       oklch(0.44 0.012 55);    /* secondary / supporting text */
---ink-3:       oklch(0.60 0.010 58);    /* muted, captions */
---line:        oklch(0.885 0.012 66);   /* hairlines on paper */
---line-2:      oklch(0.82 0.014 64);    /* stronger hairlines / borders */
+/* Ink — warm ivory */
+--color-ink:          oklch(0.928 0.020 84);   /* body            14.64:1 */
+--color-ink-strong:   oklch(0.968 0.016 86);   /* headings        16.50:1 */
+--color-ink-2:        oklch(0.782 0.018 84);   /* secondary        9.11:1 */
+--color-ink-3:        oklch(0.642 0.016 88);   /* captions         5.43:1 */
 
-/* Accent — terracotta / sienna (single, scarce) */
---accent:      oklch(0.555 0.132 44);   /* primary accent */
---accent-2:    oklch(0.50 0.138 42);    /* hover / pressed */
---accent-soft: oklch(0.92 0.035 55);    /* wash for selection backgrounds */
+/* Lines — three weights by job */
+--color-line:         oklch(0.318 0.020 158);  /* decorative separation */
+--color-line-2:       oklch(0.410 0.024 158);  /* structure        2.08:1 */
+--color-line-strong:  oklch(0.505 0.026 158);  /* meaning-bearing  3.12:1 */
 
-/* Support palette (data, annotation — not brand) */
---ochre:       oklch(0.72 0.10 78);     /* warm data / ochre annotation */
---slate:       oklch(0.52 0.035 170);   /* muted slate-green for data */
+/* Accent — terracotta / laterite, tuned for a dark ground */
+--color-accent:       oklch(0.672 0.132 44);   /* as text          5.81:1 */
+--color-accent-2:     oklch(0.742 0.118 48);   /* hover            7.62:1 */
+--color-accent-deep:  oklch(0.560 0.140 40);
+--color-accent-tint:  oklch(0.300 0.060 40);   /* selection wash */
 
-/* Dark "ink band" surfaces */
---ink-bg:      oklch(0.235 0.018 55);   /* dark section floor */
---ink-bg-2:    oklch(0.285 0.018 55);   /* elevated dark surface */
---on-ink:      oklch(0.95 0.010 76);    /* text on dark */
---on-ink-2:    oklch(0.74 0.012 72);    /* secondary text on dark */
---on-ink-line: oklch(0.40 0.016 55);    /* hairlines on dark */
+/* Support — data and annotation only, never chrome */
+--color-grass:        oklch(0.792 0.092 84);   /* numerals, figures  9.39:1 */
+--color-green:        oklch(0.660 0.070 158);  /* support marks      6.01:1 */
 
 /* Feedback */
---color-success: oklch(0.48 0.11 150);
---color-error:   oklch(0.50 0.15 25);
---color-focus:   var(--accent);          /* focus ring = accent */
+--color-success:      oklch(0.720 0.110 150);
+--color-error:        oklch(0.700 0.150 28);
 ```
 
 ### Contrast targets
-- Body text (`--ink` on `--paper`): ≥ 7:1
-- Secondary text (`--ink-2` on `--paper`): ≥ 4.5:1
-- Accent on paper (`--accent` as text): ≥ 4.5:1
-- On-ink text on dark surface: ≥ 7:1
-- Focus ring: 2px solid `--accent`, 2px offset — visible on all surfaces
+
+Verified, not asserted — `node scripts/check-contrast.mjs` runs 19 checks and fails the build on any regression.
+
+- Body text on ground: ≥ 7:1 · Secondary: ≥ 4.5:1 · Captions: ≥ 4.5:1
+- Accent as text: ≥ 4.5:1 · Non-text, markers and focus ring: ≥ 3:1
+- Focus ring: 2px solid `--color-accent`, 2px offset — visible on all surfaces
 
 ### Color rules
-- **Never pure black (#000) or pure white (#fff).** Always tinted toward the brand hue.
-- **Accent is scarce.** It appears as punctuation — not background, not everywhere.
-- **No fourth-tone addition.** The system is paper / ink-band / terracotta. No purple, no blue, no neon.
-- **Use `color-mix()` for subtle variations** rather than adding new named colors.
+- **Never pure black or pure white.** Neutrals are tinted toward the highland-green hue so nothing is a dead grey.
+- **Accent is scarce.** Punctuation, not background. If terracotta is filling area, it is wrong.
+- **Text on accent is `--color-ground-deep`, never white.** White on this terracotta is 3.12:1 and fails.
+- **Three line weights, three jobs.** Decorative uses `--color-line`; structure uses `--color-line-2`; anything conveying state or meaning uses `--color-line-strong`, which clears WCAG 1.4.11's 3:1 floor.
+- **Grass and green are data colours** — numerals, marks, annotation. Never surfaces or chrome.
+- **No fourth brand tone.** No purple, no blue, no neon. Use `color-mix()` before adding a name.
 
 ---
 
@@ -252,12 +259,20 @@ Self-host in `woff2`. Preload the two most critical faces. `font-display: swap`.
 | `--fs-display` | `clamp(3.4rem, 2.2rem + 6vw, 6.5rem)` | Display | 400 | 1.0 | Rare editorial statements |
 
 ### Typography rules
-- **Display headings:** Bricolage Grotesque, weight 300–500, negative letter-spacing (−0.01em to −0.025em at large sizes).
-- **Body / reading text:** Literata, weight 400, line-height 1.6, measure 60–72ch max.
-- **Eyebrow labels:** Spline Sans Mono, uppercase, tracking +0.10–0.14em, color `--ink-2` or `--on-ink-2`.
-- **Light text on dark:** add 0.05–0.08 to line-height — light type reads lighter and needs more room.
+- **Display headings:** Bricolage Grotesque, weight 300–500, negative letter-spacing (−0.018em, −0.026em at h1 and above). `font-optical-sizing: auto` is required — without it large display type renders with body-weight detail and reads flat.
+- **Body / reading text:** Literata, weight 400, line-height 1.62, measure 65–75ch.
+- **Light text on dark:** light type reads lighter than it measures and needs more room than the same text on paper.
 - **5-step scale minimum:** at least 1.25× ratio between adjacent steps. Never 8 sizes that are 1.1× apart.
 - **Do NOT use Inter, Fraunces, Cormorant, DM Sans, Playfair, Space Mono, IBM Plex, Instrument.** These are AI-design monoculture defaults.
+
+### Role assignment — the rule that was being broken
+
+The first build used mono **405 times**, more than display (143) and body (111) combined, and put **539 type instances at ≤12px against 152 at ≥3xl**. `--fs-display` was specced and never used once. That combination — no top end, no mono discipline — was the primary cause of the site reading as boring. The palette was never the main problem.
+
+- **Mono carries data, and only data.** Coordinates, country counts, sequence indices in a real ordered chain, tabular figures, the Explorer formula line. **Monospace as a costume for "technical" is banned.** Not for nav links, buttons, footers or section labels.
+- **No eyebrow or kicker above a heading.** Hard ban, no exceptions. The heading carries its own weight; a label that only restates it is deleted, not styled. `SectionHead` deliberately has no eyebrow slot. Mono metadata survives only where it states a fact the reader needs — `1°17′S 36°49′E`, `45 COUNTRIES`, `01–06` in the actual process sequence.
+- **Section numbers only where the sequence is information.** The value chain and the six engagement stages are ordered and the order is the argument — they keep their numerals. Parallel items do not get numbered.
+- **Something on the page must reach `--text-display`.** If nothing does, the range has collapsed to heading-and-body and will read as weak no matter what the palette does.
 
 ---
 

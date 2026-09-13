@@ -1,309 +1,311 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, CheckCircle2, MapPin, Mail, Clock, Globe, ShieldCheck, Send } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { Section, Container } from '../components/layout/Section';
+
+const REGIONS = ['Africa', 'Europe', 'United States'];
+
+const INTERESTS = [
+  'Market Research',
+  'Business Consulting',
+  'AI Enterprise Solutions',
+  'AI Training',
+  'Life Sciences',
+  'Not sure yet',
+];
+
+/* TODO: required-future config. The client has not supplied a submission
+   endpoint. Until VITE_CONTACT_ENDPOINT is set the form hands off to the user's
+   mail client rather than pretending to deliver a message it never sent. */
+const ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined;
+const INBOX = 'info@mindcraftconsultancy.com';
+
+type Errors = Partial<Record<'name' | 'email' | 'message', string>>;
+
+const fieldCls =
+  'mt-2 w-full min-h-[44px] rounded-edge border bg-[var(--color-ground)] px-4 py-3 text-body text-[var(--color-ink-strong)] transition-colors focus:outline-none';
 
 export const Contact: React.FC = () => {
   const { queryParams } = useNavigation();
 
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     name: '',
-    title: '',
     organization: '',
     email: '',
-    phone: '',
-    capability: queryParams.capability || 'Integrated End-to-End Advisory',
-    industry: queryParams.industry || 'Pharmaceuticals & Biologics',
-    geography: queryParams.geography || 'Kenya & East African Community (EAC)',
-    timeline: 'Within 1–3 months',
-    narrative: queryParams.topic ? `Inquiring regarding: ${queryParams.topic}` : ''
+    region: REGIONS[0],
+    interest: INTERESTS[0],
+    message: '',
   });
+  const [errors, setErrors] = useState<Errors>({});
+  const [sent, setSent] = useState(false);
 
-  const [submitted, setSubmitted] = useState(false);
+  const scope = useMemo(
+    () => [queryParams.industry, queryParams.geography, queryParams.capability].filter(Boolean),
+    [queryParams]
+  );
 
   useEffect(() => {
-    if (queryParams.industry) {
-      setFormData((prev) => ({ ...prev, industry: queryParams.industry }));
-    }
-    if (queryParams.geography) {
-      setFormData((prev) => ({ ...prev, geography: queryParams.geography }));
-    }
-    if (queryParams.capability) {
-      setFormData((prev) => ({ ...prev, capability: queryParams.capability }));
-    }
-    if (queryParams.topic) {
-      setFormData((prev) => ({
-        ...prev,
-        narrative: prev.narrative || `Inquiring regarding: ${queryParams.topic}`
-      }));
+    if (queryParams.capability && INTERESTS.includes(queryParams.capability)) {
+      setForm((p) => ({ ...p, interest: queryParams.capability }));
     }
   }, [queryParams]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
+  const set = (k: keyof typeof form, v: string) => {
+    setForm((p) => ({ ...p, [k]: v }));
+    if (k in errors) setErrors((e) => ({ ...e, [k]: undefined }));
   };
 
-  return (
-    <div className="space-y-0">
-      {/* Editorial Header */}
-      <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
-            <span className="text-[var(--accent)] font-semibold">CONSULTATIVE INTAKE</span>
-            <span>·</span>
-            <span>DIRECT SENIOR ACCESS</span>
-            <span>·</span>
-            <span>NAIROBI ADVISORY DESK</span>
-          </div>
+  const validate = (): Errors => {
+    const e: Errors = {};
+    if (!form.name.trim()) e.name = 'Please enter your name.';
+    // Deliberately permissive: one @ with something either side. Stricter
+    // patterns reject valid addresses and block real enquiries.
+    if (!form.email.trim()) e.email = 'Please enter an email address so we can reply.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
+      e.email = 'That email address does not look complete.';
+    if (!form.message.trim()) e.message = 'Please tell us what you are working on.';
+    return e;
+  };
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <div className="lg:col-span-8 space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
-                Start a Conversation.
-              </h1>
-              <p className="font-body text-lg text-[var(--ink)] leading-relaxed max-w-3xl">
-                Engage directly with our senior practice leads. We do not use intermediary sales layers or junior screening teams; your inquiry is evaluated directly by practice partners in Nairobi.
+  const onSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
+    const e = validate();
+    setErrors(e);
+    if (Object.keys(e).length) {
+      document.getElementById(Object.keys(e)[0])?.focus();
+      return;
+    }
+
+    const scopeLine = scope.length ? `\n\nScoped to: ${scope.join(' / ')}` : '';
+    const body = `${form.message}${scopeLine}\n\n—\n${form.name}${
+      form.organization ? `, ${form.organization}` : ''
+    }\n${form.email}\nRegion: ${form.region}\nArea of interest: ${form.interest}`;
+
+    if (ENDPOINT) {
+      try {
+        await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...form, scope }),
+        });
+        setSent(true);
+        return;
+      } catch {
+        // Fall through to mail client rather than reporting a false success.
+      }
+    }
+    window.location.href = `mailto:${INBOX}?subject=${encodeURIComponent(
+      `Enquiry — ${form.interest}`
+    )}&body=${encodeURIComponent(body)}`;
+    setSent(true);
+  };
+
+  const errCls = (k: keyof Errors) =>
+    errors[k] ? 'border-[var(--color-error)]' : 'border-[var(--color-line-2)] focus:border-[var(--color-accent)]';
+
+  return (
+    <div>
+      <section className="pt-[var(--band-tight)] pb-[var(--band-tight)]">
+        <Container width="wide">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-6 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <h1 className="text-h1">Start a conversation.</h1>
+            </div>
+            <div className="lg:col-span-5 lg:pt-4">
+              <p className="text-body text-[var(--color-ink-2)]">
+                Tell us the decision you are facing. If we are not the right partner for it, we will
+                say so and point you somewhere better.
               </p>
             </div>
-
-            <div className="lg:col-span-4 p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-4 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider">
-                Response Service Level Agreement
-              </div>
-              <div className="space-y-2 text-[var(--ink-2)] border-t border-[var(--line)] pt-3 leading-relaxed">
-                <div className="flex items-center space-x-2 text-[var(--ink-strong)] font-semibold">
-                  <Clock className="w-4 h-4 text-[var(--accent)]" />
-                  <span>24 Business Hours Guaranteed</span>
-                </div>
-                <p className="text-[11px] text-[var(--ink-3)]">
-                  Every inquiry receives a confidential substantive response with initial scoping parameters or a structured discovery invitation.
-                </p>
-              </div>
-            </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* Main Intake Form & Verification Desk Grid */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            {/* Form Column (7 cols) */}
-            <div className="lg:col-span-7 bg-[var(--paper)] border border-[var(--line)] p-6 sm:p-10 rounded-[2px] shadow-sm">
-              {submitted ? (
-                <div className="py-12 text-center space-y-6">
-                  <div className="w-12 h-12 rounded-full bg-[var(--accent-soft)] text-[var(--accent)] flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-6 h-6" />
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                      Consultative Brief Received.
-                    </h3>
-                    <p className="font-body text-sm text-[var(--ink-2)] max-w-md mx-auto leading-relaxed">
-                      Thank you, {formData.name || 'valued partner'}. A senior practice director from our Nairobi headquarters will review your briefing for {formData.organization || 'your organization'} and reply within 24 business hours.
-                    </p>
-                  </div>
+      <Section tone="ground-2" band="normal" width="wide" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-14 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            {scope.length > 0 && (
+              <p className="mb-8 border-l-2 border-[var(--color-accent)] pl-5 text-body-sm text-[var(--color-ink-2)]">
+                Scoped to <span className="text-[var(--color-grass)]">{scope.join(' / ')}</span> from
+                the explorer.
+              </p>
+            )}
 
-                  <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] font-mono text-xs text-left max-w-md mx-auto space-y-1 text-[var(--ink-2)]">
-                    <div className="text-[var(--accent)] font-semibold">Scope Summary:</div>
-                    <div>Sector: {formData.industry}</div>
-                    <div>Geography: {formData.geography}</div>
-                    <div>Discipline: {formData.capability}</div>
-                    <div>Email: {formData.email}</div>
-                  </div>
-
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="text-xs font-mono text-[var(--accent)] hover:underline cursor-pointer"
-                  >
-                    Submit an Additional Mandate Brief
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="border-b border-[var(--line)] pb-3">
-                    <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase">
-                      Mandate Specification Form
-                    </div>
-                    <div className="text-xs font-mono text-[var(--ink-3)] mt-0.5">
-                      Fields pre-configured from your exploration parameters
-                    </div>
-                  </div>
-
-                  {/* Pre-Selected Parameters */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Pillar Discipline</label>
-                      <select
-                        value={formData.capability}
-                        onChange={(e) => setFormData({ ...formData, capability: e.target.value })}
-                        className="w-full p-2.5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] text-xs focus:outline-none focus:border-[var(--accent)] cursor-pointer"
-                      >
-                        <option value="Market Research & Field Intelligence">Market Research</option>
-                        <option value="Business Consulting & Corporate Strategy">Business Consulting</option>
-                        <option value="AI Enterprise Solutions & Systems">AI Enterprise Solutions</option>
-                        <option value="AI Training & Institutional Literacy">AI Training</option>
-                        <option value="Integrated End-to-End Advisory">Integrated Engine</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Industry Sector</label>
-                      <select
-                        value={formData.industry}
-                        onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                        className="w-full p-2.5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] text-xs focus:outline-none focus:border-[var(--accent)] cursor-pointer"
-                      >
-                        <option value="Pharmaceuticals & Biologics">Pharmaceuticals</option>
-                        <option value="Medical Devices & Diagnostics">Medical Devices</option>
-                        <option value="Hospitals & Healthcare Networks">Hospitals & Providers</option>
-                        <option value="Commercial Banking & FinTech">Banking & FinTech</option>
-                        <option value="Renewable Energy & Off-Grid">Renewable Energy</option>
-                        <option value="Agribusiness & Crop Science">Agribusiness</option>
-                        <option value="Consumer Goods & Retail">Consumer Goods</option>
-                        <option value="Other Industry Vertical">Other Sector</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Target Geography</label>
-                      <select
-                        value={formData.geography}
-                        onChange={(e) => setFormData({ ...formData, geography: e.target.value })}
-                        className="w-full p-2.5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] text-xs focus:outline-none focus:border-[var(--accent)] cursor-pointer"
-                      >
-                        <option value="Kenya & East African Community (EAC)">East Africa (Kenya/EAC)</option>
-                        <option value="Nigeria & ECOWAS Regional Bloc">West Africa (Nigeria/ECOWAS)</option>
-                        <option value="South Africa & SADC Corridor">Southern Africa (SADC)</option>
-                        <option value="Egypt & North African Gateway">North Africa (Egypt)</option>
-                        <option value="Pan-African Multi-Country Mandate">Pan-African Multi-Country</option>
-                        <option value="European / African Trade Corridor">Europe Corridor</option>
-                        <option value="North American / African Biotech Corridor">North America Corridor</option>
-                      </select>
-                    </div>
+            {sent ? (
+              <div aria-live="polite">
+                <h2 className="text-h3">Thank you.</h2>
+                <p className="measure mt-5 text-body text-[var(--color-ink-2)]">
+                  {ENDPOINT
+                    ? 'Your message is with the Nairobi office. A member of the team will reply to you directly.'
+                    : 'Your mail client should have opened with the message ready to send. If it did not, write to us directly at the address below.'}
+                </p>
+                <a
+                  href={`mailto:${INBOX}`}
+                  className="mt-6 inline-block text-body text-[var(--color-accent)] underline decoration-[var(--color-line-strong)] underline-offset-4 hover:decoration-[var(--color-accent)]"
+                >
+                  {INBOX}
+                </a>
+              </div>
+            ) : (
+              <form onSubmit={onSubmit} noValidate>
+                <div className="grid grid-cols-1 gap-x-8 gap-y-7 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="name" className="text-body-sm text-[var(--color-ink-2)]">
+                      Name <span className="text-[var(--color-ink-3)]">(required)</span>
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      value={form.name}
+                      onChange={(e) => set('name', e.target.value)}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
+                      className={`${fieldCls} ${errCls('name')}`}
+                    />
+                    {errors.name && (
+                      <p id="name-error" className="mt-2 text-caption text-[var(--color-error)]">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
 
-                  {/* Personal & Organization Contact Info */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Your Full Name *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Dr. Amina Odhiambo"
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] focus:outline-none focus:border-[var(--accent)]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Executive Title</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. VP Commercial Strategy"
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] focus:outline-none focus:border-[var(--accent)]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Organization Name *</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Pan-African Healthcare Ltd"
-                        value={formData.organization}
-                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                        className="w-full p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] focus:outline-none focus:border-[var(--accent)]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Business Email *</label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="e.g. a.odhiambo@organization.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] focus:outline-none focus:border-[var(--accent)]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Challenge Narrative */}
-                  <div className="font-mono text-xs">
-                    <label className="text-[10px] uppercase text-[var(--ink-3)] block mb-1">Strategic Challenge / Key Questions *</label>
-                    <textarea
-                      required
-                      rows={4}
-                      placeholder="Outline your strategic objectives, regulatory questions, or operational bottlenecks..."
-                      value={formData.narrative}
-                      onChange={(e) => setFormData({ ...formData, narrative: e.target.value })}
-                      className="w-full p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] text-[var(--ink-strong)] focus:outline-none focus:border-[var(--accent)] font-body text-sm"
+                  <div>
+                    <label htmlFor="organization" className="text-body-sm text-[var(--color-ink-2)]">
+                      Organisation
+                    </label>
+                    <input
+                      id="organization"
+                      name="organization"
+                      value={form.organization}
+                      onChange={(e) => set('organization', e.target.value)}
+                      className={`${fieldCls} border-[var(--color-line-2)] focus:border-[var(--color-accent)]`}
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-4 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm inline-flex items-center justify-center space-x-2 cursor-pointer"
-                  >
-                    <span>Transmit Briefing to Nairobi Practice Leads</span>
-                    <Send className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
-            </div>
-
-            {/* Nairobi Headquarters Desk Credentials (5 cols) */}
-            <div className="lg:col-span-5 space-y-6">
-              <div className="p-8 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-6 font-mono text-xs">
-                <div className="text-[var(--accent)] font-semibold uppercase tracking-wider text-xs pb-3 border-b border-[var(--line)]">
-                  Nairobi Headquarters Desk
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <MapPin className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                    <div>
-                      <div className="text-[var(--ink-strong)] font-semibold">Headquarters & Research Lab</div>
-                      <div className="text-[var(--ink-3)]">Nairobi, Kenya · Upper Hill Innovation Corridor</div>
-                      <div className="text-[var(--ink-3)] text-[11px]">1°17′S, 36°49′E</div>
-                    </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="email" className="text-body-sm text-[var(--color-ink-2)]">
+                      Email <span className="text-[var(--color-ink-3)]">(required)</span>
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => set('email', e.target.value)}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'email-error' : undefined}
+                      className={`${fieldCls} ${errCls('email')}`}
+                    />
+                    {errors.email && (
+                      <p id="email-error" className="mt-2 text-caption text-[var(--color-error)]">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex items-start space-x-3">
-                    <Mail className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                    <div>
-                      <div className="text-[var(--ink-strong)] font-semibold">Direct Institutional Desk</div>
-                      <a href="mailto:info@mindcraftconsultancy.com" className="text-[var(--accent)] underline">
-                        info@mindcraftconsultancy.com
-                      </a>
-                    </div>
+                  <div>
+                    <label htmlFor="region" className="text-body-sm text-[var(--color-ink-2)]">
+                      Region
+                    </label>
+                    <select
+                      id="region"
+                      name="region"
+                      value={form.region}
+                      onChange={(e) => set('region', e.target.value)}
+                      className={`${fieldCls} cursor-pointer border-[var(--color-line-2)] focus:border-[var(--color-accent)]`}
+                    >
+                      {REGIONS.map((r) => (
+                        <option key={r} value={r} className="bg-[var(--color-surface)]">
+                          {r}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
-                  <div className="flex items-start space-x-3">
-                    <Globe className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                    <div>
-                      <div className="text-[var(--ink-strong)] font-semibold">Active Operational Reach</div>
-                      <div className="text-[var(--ink-3)]">45 African Countries · EAC, ECOWAS, SADC</div>
-                    </div>
+                  <div>
+                    <label htmlFor="interest" className="text-body-sm text-[var(--color-ink-2)]">
+                      Area of interest
+                    </label>
+                    <select
+                      id="interest"
+                      name="interest"
+                      value={form.interest}
+                      onChange={(e) => set('interest', e.target.value)}
+                      className={`${fieldCls} cursor-pointer border-[var(--color-line-2)] focus:border-[var(--color-accent)]`}
+                    >
+                      {INTERESTS.map((i) => (
+                        <option key={i} value={i} className="bg-[var(--color-surface)]">
+                          {i}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label htmlFor="message" className="text-body-sm text-[var(--color-ink-2)]">
+                      What are you working on?{' '}
+                      <span className="text-[var(--color-ink-3)]">(required)</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={6}
+                      value={form.message}
+                      onChange={(e) => set('message', e.target.value)}
+                      aria-invalid={!!errors.message}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
+                      className={`${fieldCls} resize-y ${errCls('message')}`}
+                    />
+                    {errors.message && (
+                      <p id="message-error" className="mt-2 text-caption text-[var(--color-error)]">
+                        {errors.message}
+                      </p>
+                    )}
                   </div>
                 </div>
 
-                <div className="p-4 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
-                  <div className="font-semibold text-[var(--ink-strong)]">Confidentiality Guarantee:</div>
-                  <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                    All mandate briefings are treated as strictly confidential under customary non-disclosure standards. Client identities and proprietary operational data are never shared.
-                  </p>
-                </div>
-              </div>
-            </div>
+                <button
+                  type="submit"
+                  className="group mt-9 inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]"
+                >
+                  Send
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                </button>
+              </form>
+            )}
           </div>
+
+          <dl className="lg:col-span-4 lg:col-start-9">
+            {[
+              ['Headquarters', 'Nairobi, Kenya'],
+              ['Email', INBOX],
+              ['Regions served', 'Africa · Europe · United States'],
+            ].map(([k, v]) => (
+              <div key={k} className="border-t border-[var(--color-line)] py-5">
+                <dt className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]">
+                  {k}
+                </dt>
+                <dd className="mt-2 text-body text-[var(--color-ink)]">
+                  {k === 'Email' ? (
+                    <a
+                      href={`mailto:${INBOX}`}
+                      className="text-[var(--color-accent)] underline decoration-[var(--color-line-strong)] underline-offset-4 hover:decoration-[var(--color-accent)]"
+                    >
+                      {v}
+                    </a>
+                  ) : (
+                    v
+                  )}
+                </dd>
+              </div>
+            ))}
+            <p className="border-t border-[var(--color-line)] pt-5 text-caption text-[var(--color-ink-3)]">
+              Nairobi is our only office. Everywhere else we work through in-country research
+              associates.
+            </p>
+          </dl>
         </div>
-      </section>
+      </Section>
     </div>
   );
 };

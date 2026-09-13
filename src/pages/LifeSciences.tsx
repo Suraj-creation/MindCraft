@@ -1,303 +1,332 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, ArrowRight, Stethoscope, ShieldCheck, CheckCircle2, FileText, Activity, Layers, Cpu, BookOpen, Building2, Thermometer, MapPin, Truck } from 'lucide-react';
+import React from 'react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
+import { Section, Container, SectionHead } from '../components/layout/Section';
 import { LifeSciencesEcosystemDiagram } from '../components/LifeSciencesEcosystemDiagram';
+
+/* Corridors are described as work MindCraft takes on, never as work already
+   delivered. Established 2026 — there is no engagement history to cite, and
+   no figure here that the source documents do not support. */
+const CORRIDORS = [
+  {
+    id: 'cold-chain',
+    title: 'Cold chain and last-mile integrity',
+    lead: 'Biologics, vaccines and recombinant therapies need an unbroken 2–8°C or −20°C chain. The exposure is rarely the depot — it is the transit leg and the border yard.',
+    corridor: 'Northern Corridor · Mombasa → Nairobi → Kampala → Kigali',
+    corridor2: 'Central Corridor · Dar es Salaam → Dodoma → Bujumbura',
+    items: [
+      {
+        name: 'Telemetry and logger auditing',
+        body: 'Verification of GSM logger records against transit legs, to locate where thermal excursions occur rather than that they occurred.',
+      },
+      {
+        name: 'Solar direct drive depot assessment',
+        body: 'WHO PQS-referenced solar refrigeration mapping for decentralised vaccine hub distribution.',
+      },
+    ],
+  },
+  {
+    id: 'trial-sites',
+    title: 'Trial site feasibility',
+    lead: 'Africa hosts a small share of global clinical trials relative to its population and genetic diversity. Sponsor feasibility work depends on knowing which sites can actually carry a protocol.',
+    corridor: 'Kenya · Uganda · Nigeria · South Africa',
+    corridor2: 'Academic and referral hospital networks',
+    items: [
+      {
+        name: 'Investigator site assessment',
+        body: 'Feasibility review covering Phase II/III protocol capacity, biobanking sovereignty and ethics review turnaround.',
+      },
+      {
+        name: 'Consent and community engagement design',
+        body: 'Vernacular consent protocols and community advisory board frameworks built for the study population.',
+      },
+    ],
+  },
+];
+
+/* Named in the Corporate Profile as the Life-Sciences-specific AI work. */
+const LS_AI = [
+  {
+    name: 'Pharmacovigilance and adverse-event monitoring',
+    body: 'AI-assisted case intake, signal detection and reporting built to sit inside existing safety workflows.',
+  },
+  {
+    name: 'Regulatory intelligence automation',
+    body: 'Continuous monitoring of guidance and requirement changes across African and international regulators.',
+  },
+  {
+    name: 'KOL identification and market-access analytics',
+    body: 'Influence mapping and access-pathway analysis for therapy areas and territories under evaluation.',
+  },
+];
+
+const AUTHORITIES = [
+  {
+    abbr: 'PPB',
+    where: 'Kenya',
+    name: 'Pharmacy and Poisons Board',
+    scope: 'Dossier review, pharmacovigilance portal submissions, GMP inspection and EAC joint assessment.',
+  },
+  {
+    abbr: 'NAFDAC',
+    where: 'Nigeria',
+    name: 'National Agency for Food and Drug Administration and Control',
+    scope: 'Import permits, product registration and renewal, serialisation and track-and-trace compliance.',
+  },
+  {
+    abbr: 'SAHPRA',
+    where: 'South Africa',
+    name: 'South African Health Products Regulatory Authority',
+    scope: 'eCTD format compliance, Section 21 access, medical device licensing and clinical trial registration.',
+  },
+  {
+    abbr: 'TMDA',
+    where: 'Tanzania',
+    name: 'Tanzania Medicines and Medical Devices Authority',
+    scope: 'EAC mutual recognition, port-of-entry sampling and post-registration variation.',
+  },
+  {
+    abbr: 'NDA',
+    where: 'Uganda',
+    name: 'National Drug Authority',
+    scope: 'Post-market surveillance, institutional import licensing, essential medicines listing and cold-store audit.',
+  },
+  {
+    abbr: 'AMA',
+    where: 'Continental',
+    name: 'African Medicines Agency',
+    scope: 'Treaty-based harmonisation, centralised review for complex biologics, AfCFTA pharmaceutical trade.',
+  },
+];
+
+const linkCls =
+  'group inline-flex items-center gap-2 text-body-sm text-[var(--color-accent)] hover:text-[var(--color-accent-2)] cursor-pointer';
 
 export const LifeSciences: React.FC = () => {
   const { navigate } = useNavigation();
 
   return (
-    <div className="space-y-0">
-      {/* ─────────────────────────────────────────────────────────────
-          HERO — CLINICAL & COMMERCIAL DUAL-FLUENCY THESIS
-      ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
-            <span className="text-[var(--accent)] font-semibold">CORE SPECIALIZATION</span>
-            <span>·</span>
-            <span>LIFE SCIENCES PRACTICE</span>
-            <span>·</span>
-            <span>CLINICAL & REGULATORY FLUENCY</span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            <div className="lg:col-span-7 space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
-                Deep in Life Sciences. Built for Africa.
+    <div>
+      {/* ── Hero: the page that carries the depth argument ─────────────── */}
+      <section className="pt-[var(--band-tight)] pb-[var(--band)]">
+        <Container width="wide">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-12">
+            <div className="lg:col-span-7">
+              <h1 className="rise text-display" style={{ animationDelay: '0ms' }}>
+                Life Sciences is where we go deepest.
               </h1>
-              <p className="font-body text-lg text-[var(--ink)] leading-relaxed">
-                Life Sciences is the foundational bedrock of MindCraft. We unite molecular biology, clinical medicine, African regulatory law, and pharmaceutical supply chain dynamics — transforming healthcare innovation into sustainable, high-impact commercial reality across the continent.
+              <p
+                className="rise measure mt-8 text-lead text-[var(--color-ink-2)]"
+                style={{ animationDelay: '120ms' }}
+              >
+                The founding heritage and core specialisation of MindCraft. Six sub-sectors, from
+                molecule to hospital ward — read through African regulatory structure, clinical
+                practice and commercial reality at the same time.
               </p>
-              
-              {/* Dual-Fluency Thesis Card */}
-              <div className="p-5 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-2">
-                <div className="font-mono text-xs uppercase text-[var(--accent)] font-semibold tracking-wider">
-                  The Clinical + Commercial Dual-Fluency Thesis
-                </div>
-                <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                  Most healthcare advisories in Africa either operate purely as policy NGOs or as detached financial consultants. MindCraft bridges both worlds: our teams speak fluent pathophysiology, pharmacokinetics, and clinical trial endpoints while engineering multi-tier distributor margins, cold-chain SLAs, and public tender pricing models.
-                </p>
-              </div>
 
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="rise mt-10 flex flex-wrap items-center gap-4" style={{ animationDelay: '200ms' }}>
                 <button
                   onClick={() => navigate('/contact?industry=Life%20Sciences')}
-                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm inline-flex items-center space-x-2 cursor-pointer"
+                  className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]"
                 >
-                  <span>Engage Our Life Sciences Practice</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  Start a conversation
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
                 </button>
                 <button
                   onClick={() => navigate('/explore?industry=Pharmaceuticals')}
-                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--ink-strong)] bg-transparent hover:bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] transition-colors inline-flex items-center space-x-2 cursor-pointer"
+                  className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge border border-[var(--color-line-2)] px-7 py-4 text-body-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-line-strong)]"
                 >
-                  <span>Compose Life Sciences Scenario</span>
-                  <ArrowRight className="w-4 h-4 text-[var(--accent)]" />
+                  Compose a scenario
+                  <ArrowRight className="h-4 w-4 text-[var(--color-accent)] transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
 
-            {/* Right: Dual Clinical Photography Anchors */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="border border-[var(--line)] bg-[var(--paper-2)] p-2 rounded-[2px] shadow-sm">
-                <div className="aspect-[16/10] overflow-hidden rounded-[2px] relative">
-                  <img
-                    src="/assets/images/african_medical_diagnostics_1788986708761.jpg"
-                    alt="African clinical researchers and physicians evaluating diagnostic imaging data"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                  />
-                  <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-xs text-white font-mono text-[9px] uppercase tracking-wider px-2 py-0.5">
-                    Advanced Clinical Diagnostics Lab
-                  </div>
-                </div>
-                <div className="pt-2 px-1 flex items-center justify-between font-mono text-[11px] text-[var(--ink-3)]">
-                  <span>Molecular & Clinical Validation</span>
-                  <span className="text-[var(--accent)] font-semibold">PPB · NAFDAC · SAHPRA</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 font-mono text-[11px]">
-                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-                  <span className="text-[var(--accent)] font-bold block text-base">45+</span>
-                  <span className="text-[var(--ink-3)]">African regulatory agencies tracked</span>
-                </div>
-                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-                  <span className="text-[var(--accent)] font-bold block text-base">100%</span>
-                  <span className="text-[var(--ink-3)]">Cold-chain validation compliance</span>
-                </div>
-              </div>
+            <div className="rise lg:col-span-5" style={{ animationDelay: '280ms' }}>
+              <figure>
+                <img
+                  src="/assets/images/african_medical_diagnostics_1788986720251.jpg"
+                  alt="Clinical director validating automated instrumentation in an accredited diagnostic laboratory"
+                  className="aspect-[4/5] w-full object-cover"
+                  loading="eager"
+                />
+                <figcaption className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-[var(--color-line)] pt-4 text-caption text-[var(--color-ink-3)]">
+                  <span>Clinical and molecular validation</span>
+                  <span className="text-[var(--color-green)]">PPB · NAFDAC · SAHPRA</span>
+                </figcaption>
+              </figure>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      {/* ─────────────────────────────────────────────────────────────
-          INTERACTIVE LIFE SCIENCES ECOSYSTEM DIAGRAM
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              SYSTEMS ARCHITECTURE
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              The 6 Life Sciences domains in technical depth.
-            </h2>
+      {/* ── The thesis: one statement, asymmetric, no container ────────── */}
+      <Section tone="ground-2" band="normal" width="wide" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <h2 className="text-h3">Clinical language and commercial language, in one room.</h2>
           </div>
-
-          <LifeSciencesEcosystemDiagram />
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          COLD-CHAIN & CLINICAL TRIAL SITE READINESS CORRIDORS
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              SPECIALIZED OPERATIONAL CORRIDORS
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Physical & regulatory infrastructure across Africa.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left: Cold-Chain Integrity Corridor */}
-            <div className="p-6 sm:p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-5">
-              <div className="flex items-center space-x-3 text-xs font-mono text-[var(--accent)] font-semibold uppercase tracking-wider">
-                <Thermometer className="w-4 h-4" />
-                <span>Cold-Chain Integrity & Last-Mile Assurance</span>
-              </div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                The East & Central African Pharma Cold Highway
-              </h3>
-              <p className="font-body text-xs sm:text-sm text-[var(--ink)] leading-relaxed">
-                Biologics, vaccines, and recombinant therapies require unbroken 2°C to 8°C or -20°C temperature chains. MindCraft audits transit corridors along the Northern Corridor (Mombasa → Nairobi → Kampala → Kigali) and Central Corridor (Dar es Salaam → Dodoma → Bujumbura).
-              </p>
-
-              <div className="space-y-2.5 font-mono text-xs">
-                <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] flex items-start space-x-2">
-                  <Truck className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[var(--ink-strong)] font-semibold block">Active Telemetry & IoT Auditing</span>
-                    <span className="text-[var(--ink-2)] text-[11px]">Real-time GSM logger data verification catching thermal excursions at border customs yards.</span>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] flex items-start space-x-2">
-                  <ShieldCheck className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[var(--ink-strong)] font-semibold block">Solar Direct Drive (SDD) Depot Validation</span>
-                    <span className="text-[var(--ink-2)] text-[11px]">WHO PQS-certified solar refrigeration mapping for decentralized vaccine hub distribution.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: In-Country Trial Site Readiness */}
-            <div className="p-6 sm:p-8 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-5">
-              <div className="flex items-center space-x-3 text-xs font-mono text-[var(--accent)] font-semibold uppercase tracking-wider">
-                <Activity className="w-4 h-4" />
-                <span>Clinical Trial Site Readiness Map</span>
-              </div>
-              <h3 className="font-display text-2xl font-bold text-[var(--ink-strong)]">
-                Ethical & GCP-Accredited Investigator Sites
-              </h3>
-              <p className="font-body text-xs sm:text-sm text-[var(--ink)] leading-relaxed">
-                Africa represents less than 3% of global clinical trials despite hosting 17% of the global population and immense genetic diversity. MindCraft accelerates international sponsor feasibility studies by evaluating verified trial sites across Kenya, Uganda, Nigeria, and South Africa.
-              </p>
-
-              <div className="space-y-2.5 font-mono text-xs">
-                <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] flex items-start space-x-2">
-                  <MapPin className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[var(--ink-strong)] font-semibold block">KEMRI / Aga Khan / Makerere Academic Hubs</span>
-                    <span className="text-[var(--ink-2)] text-[11px]">Audited for Phase II/III protocol capacity, bio-banking sovereignty, and IRB review turnaround times.</span>
-                  </div>
-                </div>
-
-                <div className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] flex items-start space-x-2">
-                  <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-[var(--ink-strong)] font-semibold block">Informed Consent & Community Advisory Boards (CAB)</span>
-                    <span className="text-[var(--ink-2)] text-[11px]">Culturally resonant vernacular translation protocols and community engagement frameworks.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          REGULATORY HARMONIZATION STRIP (PPB, NAFDAC, SAHPRA, TMDA, NDA, AMA)
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              REGULATORY BODIES & CONTINENTAL HARMONIZATION
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Direct fluency across African drug and health technology authorities.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">PPB · KENYA</span>
-                <span className="text-[10px] text-[var(--ink-3)]">EAC Focal Point</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">Pharmacy and Poisons Board</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                Fast-track dossier reviews, pharmacovigilance portal submissions, GMP inspections, and EAC joint assessments.
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">NAFDAC · NIGERIA</span>
-                <span className="text-[10px] text-[var(--ink-3)]">ECOWAS Anchor</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">National Agency for Food & Drug Administration</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                Import permits, 5-year product registration renewals, track-and-trace serialization compliance, and MAS mobile authentication.
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">SAHPRA · SOUTH AFRICA</span>
-                <span className="text-[10px] text-[var(--ink-3)]">SADC Leader</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">South African Health Products Regulatory Authority</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                Full eCTD format compliance, section 21 exemptions, medical device licensing, and clinical trials registries.
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">TMDA · TANZANIA</span>
-                <span className="text-[10px] text-[var(--ink-3)]">EAC Joint Review</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">Tanzania Medicines & Medical Devices Authority</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                WHO maturity level 3 certified regulatory oversight, joint EAC mutual recognition protocols, and port-of-entry sampling.
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">NDA · UGANDA</span>
-                <span className="text-[10px] text-[var(--ink-3)]">Great Lakes Hub</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">National Drug Authority</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                Regional post-market surveillance, institutional import licenses, essential medicines list updates, and cold-store audits.
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--accent)]/40 rounded-[2px] space-y-2 bg-[var(--accent-soft)]/20">
-              <div className="flex items-center justify-between">
-                <span className="text-[var(--accent)] font-bold text-sm">AMA · CONTINENTAL</span>
-                <span className="text-[10px] font-bold text-[var(--accent)]">AU Treaty</span>
-              </div>
-              <div className="text-[var(--ink-strong)] font-semibold">African Medicines Agency</div>
-              <div className="text-[var(--ink-2)] text-[11px] leading-relaxed">
-                Continental treaty harmonization, centralized review for complex biologics, and AfCFTA pharma trade enablement.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          CTA BAND
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 bg-[var(--ink-strong)] text-[var(--paper)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
-          <div className="space-y-2 max-w-xl">
-            <h2 className="font-display text-3xl font-bold text-white">
-              Speak directly with our Life Sciences practice leads.
-            </h2>
-            <p className="font-body text-sm text-[var(--paper-2)]/80">
-              Engage clinicians, former regulatory officers, and Life Sciences strategy consultants based in Nairobi.
+          <div className="lg:col-span-7 lg:pt-2">
+            <p className="measure text-lead text-[var(--color-ink)]">
+              Healthcare advisory in Africa tends to split. One side speaks policy and public health
+              and stops at the recommendation. The other speaks margin and market entry and treats
+              the clinical detail as someone else&apos;s problem.
+            </p>
+            <p className="measure mt-6 text-body text-[var(--color-ink-2)]">
+              MindCraft works in both registers: bioequivalence, pharmacokinetics and trial endpoints
+              on one side; distributor margin structure, cold-chain service levels and public tender
+              pricing on the other. A regulatory pathway that ignores the commercial model is not a
+              plan, and a commercial model that ignores the pathway is not a plan either.
             </p>
           </div>
-          <button
-            onClick={() => navigate('/contact?industry=Life%20Sciences')}
-            className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors whitespace-nowrap self-start md:self-auto cursor-pointer"
-          >
-            Start a Life Sciences Conversation
-          </button>
         </div>
-      </section>
+      </Section>
+
+      {/* ── The six sub-sectors ────────────────────────────────────────── */}
+      <Section tone="raised" band="normal" width="wide" rule>
+        <SectionHead
+          title="Six sub-sectors, each with its own structure."
+          lead="Select a sub-sector to see its regulatory context, market conditions and the work MindCraft takes on within it."
+          meta={
+            <span className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-grass)]">
+              06 sub-sectors
+            </span>
+          }
+          className="mb-14"
+        />
+        <LifeSciencesEcosystemDiagram />
+      </Section>
+
+      {/* ── Operational corridors: editorial blocks split by hairlines ─── */}
+      <Section band="loose" width="default" rule>
+        <h2 className="max-w-2xl text-h3">Where Life Sciences work actually gets hard.</h2>
+        <p className="measure mt-5 text-body text-[var(--color-ink-2)]">
+          Two places where a sound strategy fails on physical and procedural ground, and where the
+          sector work concentrates.
+        </p>
+
+        <div className="mt-16">
+          {CORRIDORS.map((c) => (
+            <article
+              key={c.id}
+              className="grid grid-cols-1 gap-x-12 gap-y-8 border-t border-[var(--color-line)] py-12 lg:grid-cols-12"
+            >
+              <div className="lg:col-span-4">
+                <h3 className="text-h4">{c.title}</h3>
+                {/* Mono here is route and jurisdiction data, not a label. */}
+                <p className="mt-6 font-mono text-caption text-[var(--color-ink-3)]">{c.corridor}</p>
+                <p className="mt-1.5 font-mono text-caption text-[var(--color-ink-3)]">{c.corridor2}</p>
+              </div>
+
+              <div className="lg:col-span-8">
+                <p className="measure text-lead text-[var(--color-ink)]">{c.lead}</p>
+                <dl className="mt-8">
+                  {c.items.map((it) => (
+                    <div key={it.name} className="border-t border-[var(--color-line)] py-5">
+                      <dt className="text-body text-[var(--color-ink-strong)]">{it.name}</dt>
+                      <dd className="measure mt-2 text-body-sm text-[var(--color-ink-2)]">{it.body}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Life-Sciences-specific AI ──────────────────────────────────── */}
+      <Section tone="ground-2" band="normal" width="default" rule>
+        <SectionHead
+          title="AI built for this sector, not adapted to it."
+          lead="Three areas where the enterprise AI practice is written against Life Sciences workflows rather than generalised from another industry."
+          action={
+            <button onClick={() => navigate('/what-we-do/ai-enterprise-solutions')} className={linkCls}>
+              AI Enterprise Solutions
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
+          }
+          className="mb-14"
+        />
+
+        <dl className="border-t border-[var(--color-line-2)]">
+          {LS_AI.map((a) => (
+            <div
+              key={a.name}
+              className="grid grid-cols-1 gap-x-12 gap-y-2 border-b border-[var(--color-line)] py-6 lg:grid-cols-12"
+            >
+              <dt className="text-h5 text-[var(--color-ink-strong)] lg:col-span-5">{a.name}</dt>
+              <dd className="text-body text-[var(--color-ink-2)] lg:col-span-7">{a.body}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ── Regulatory authorities: a structured list, not six cards ───── */}
+      <Section band="normal" width="wide" rule>
+        <SectionHead
+          title="The authorities the work runs against."
+          lead="Submission, compliance and surveillance work is shaped by the authority that governs it. These are the ones that matter most across African markets."
+          className="mb-14"
+        />
+
+        <dl className="border-t border-[var(--color-line-2)]">
+          {AUTHORITIES.map((a) => (
+            <div
+              key={a.abbr}
+              className="grid grid-cols-1 gap-x-12 gap-y-3 border-b border-[var(--color-line)] py-7 lg:grid-cols-12"
+            >
+              <dt className="lg:col-span-3">
+                <span className="block text-h5 text-[var(--color-ink-strong)]">{a.abbr}</span>
+                <span className="mt-1 block text-caption text-[var(--color-green)]">{a.where}</span>
+              </dt>
+              <dd className="lg:col-span-9">
+                <p className="text-body text-[var(--color-ink)]">{a.name}</p>
+                <p className="measure mt-2 text-body-sm text-[var(--color-ink-2)]">{a.scope}</p>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {/* ── Closing ────────────────────────────────────────────────────── */}
+      <Section tone="deep" band="normal" width="default" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h2 className="text-h2">Start a Life Sciences conversation.</h2>
+            <p className="measure mt-6 text-lead text-[var(--color-ink-2)]">
+              A registration pathway, a launch, a distributor problem, a hospital operating model, a
+              safety workflow that will not scale. Tell us which one, and we will tell you honestly
+              whether we are the right partner for it.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <button
+                onClick={() => navigate('/contact?industry=Life%20Sciences')}
+                className="group inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]"
+              >
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+              </button>
+              <a
+                href="mailto:info@mindcraftconsultancy.com"
+                className="text-body-sm text-[var(--color-ink-2)] underline decoration-[var(--color-line-strong)] underline-offset-4 transition-colors hover:text-[var(--color-ink)] hover:decoration-[var(--color-accent)]"
+              >
+                info@mindcraftconsultancy.com
+              </a>
+            </div>
+          </div>
+
+          <div className="border-t border-[var(--color-line)] pt-8 lg:col-span-4 lg:col-start-9 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+            <p className="text-body text-[var(--color-ink-2)]">
+              Life Sciences runs across all four capabilities — research, advisory, enterprise AI and
+              training — as one engagement rather than four.
+            </p>
+            <button onClick={() => navigate('/what-we-do')} className={`${linkCls} mt-6`}>
+              How the engine works
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 };

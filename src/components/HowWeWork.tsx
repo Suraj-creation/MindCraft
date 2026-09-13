@@ -43,7 +43,7 @@ export const HowWeWork: React.FC = () => {
                   onClick={() => setActiveStageNumber(stage.number)}
                   className={`text-left p-3.5 rounded-[2px] transition-all cursor-pointer border ${
                     isSelected
-                      ? 'bg-[var(--surface)] border-[var(--accent)] shadow-sm'
+                      ? 'bg-[var(--surface)] border-[var(--accent)]'
                       : 'bg-[var(--paper-2)] border-[var(--line)] hover:border-[var(--line-2)]'
                   }`}
                 >
@@ -51,7 +51,7 @@ export const HowWeWork: React.FC = () => {
                     <span
                       className={`font-mono text-xs font-semibold px-2 py-0.5 rounded-[1px] ${
                         isSelected
-                          ? 'bg-[var(--accent)] text-white'
+                          ? 'bg-[var(--accent)] text-[var(--color-ground-deep)]'
                           : 'bg-[var(--line)] text-[var(--ink-2)]'
                       }`}
                     >

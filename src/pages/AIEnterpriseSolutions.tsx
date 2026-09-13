@@ -1,175 +1,161 @@
 import React from 'react';
-import { ArrowUpRight, ArrowRight, Cpu, ShieldCheck, Database, Server, Terminal, CheckCircle2, Lock, Zap } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 import { AITechnologyArchitecture } from '../components/AITechnologyArchitecture';
+import { Section, Container, SectionHead } from '../components/layout/Section';
+
+/* Design commitments, not outcomes — these describe how a system is built,
+   which is a claim we can make on day one. */
+const COMMITMENTS: [string, string][] = [
+  ['Runs where your data lives', 'On-premise or in a private cloud tenancy you control.'],
+  ['Deterministic where it matters', 'Schema validation and test coverage around every generated output.'],
+  ['No training on your data', 'Nothing leaves the tenancy into a shared or public model.'],
+];
+
+/* Life-Sciences-specific AI. Parallel systems, so no numerals, no cards. */
+const SOLUTIONS: [string, string][] = [
+  [
+    'Pharmacovigilance and adverse-event monitoring',
+    'Multilingual extraction from clinician reports, patient narratives and discharge notes, built to produce standardised, MedDRA-coded safety notifications for review.',
+  ],
+  [
+    'Regulatory intelligence automation',
+    'Semantic comparison across the Pharmacy and Poisons Board, NAFDAC, SAHPRA and EAC regional guidance, built to surface where a submission has to differ by market.',
+  ],
+  [
+    'Opinion-leader and market-access analytics',
+    'Structured mapping of clinical influence and access pathways, built so commercial and medical affairs teams work from the same picture.',
+  ],
+];
+
+const primaryBtn =
+  'group inline-flex cursor-pointer items-center gap-2.5 rounded-edge bg-[var(--color-accent)] px-7 py-4 text-body-sm font-medium text-[var(--color-ground-deep)] transition-colors hover:bg-[var(--color-accent-2)]';
+const ghostBtn =
+  'group inline-flex cursor-pointer items-center gap-2.5 rounded-edge border border-[var(--color-line-2)] px-7 py-4 text-body-sm text-[var(--color-ink)] transition-colors hover:border-[var(--color-line-strong)]';
+const linkCls =
+  'group inline-flex items-center gap-2 text-body-sm text-[var(--color-accent)] hover:text-[var(--color-accent-2)] cursor-pointer';
 
 export const AIEnterpriseSolutions: React.FC = () => {
   const { navigate } = useNavigation();
 
   return (
-    <div className="space-y-0">
-      {/* ─────────────────────────────────────────────────────────────
-          EDITORIAL HEADER WITH ARCHITECTURAL VISUAL ANCHOR
-      ───────────────────────────────────────────────────────────── */}
-      <section className="bg-[var(--paper)] pt-12 pb-16 lg:pt-16 lg:pb-24 border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="flex items-center space-x-3 text-xs font-mono text-[var(--ink-3)] uppercase tracking-wider">
-            <span className="text-[var(--accent)] font-semibold">PILLAR 04 · PRODUCTION SYSTEMS</span>
-            <span>·</span>
-            <span>SOVEREIGN ARCHITECTURES</span>
-            <span>·</span>
-            <span>ENTERPRISE ENGINEERING</span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left: Thesis (7 cols) */}
-            <div className="lg:col-span-7 space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--ink-strong)] leading-tight">
-                AI Enterprise Solutions.
-              </h1>
-              <p className="font-body text-lg text-[var(--ink)] leading-relaxed">
-                We design and deploy custom, production-grade AI systems built for enterprise security, strict data sovereignty, deterministic auditability, and zero cross-border data leakage across African institutions.
+    <div>
+      {/* ── Hero: statement, with the engineering position beside it ──── */}
+      <section className="pt-[var(--band-tight)] pb-[var(--band)]">
+        <Container width="wide">
+          <div className="grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <h1 className="text-h1">Systems that outlive the pilot.</h1>
+              <p className="measure mt-8 text-lead text-[var(--color-ink-2)]">
+                End-to-end design, build and integration of AI systems that put insight inside
+                everyday workflows — from market intelligence platforms to patient- and
+                customer-facing tools, engineered for the security and data rules you operate under.
               </p>
 
-              {/* Engineering Guarantees Strip */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
-                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-                  <span className="text-[var(--accent)] font-bold block text-sm">Sovereign VPC</span>
-                  <span className="text-[var(--ink-2)] text-[11px]">Local on-prem or private cloud</span>
-                </div>
-                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-                  <span className="text-[var(--accent)] font-bold block text-sm">Deterministic</span>
-                  <span className="text-[var(--ink-2)] text-[11px]">Strict schema validation & tests</span>
-                </div>
-                <div className="p-3 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px]">
-                  <span className="text-[var(--accent)] font-bold block text-sm">Zero Leakage</span>
-                  <span className="text-[var(--ink-2)] text-[11px]">No public multi-tenant model training</span>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="mt-10 flex flex-wrap items-center gap-4">
                 <button
                   onClick={() => navigate('/contact?topic=ai-enterprise-solutions')}
-                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm inline-flex items-center space-x-2 cursor-pointer"
+                  className={primaryBtn}
                 >
-                  <span>Scope an Enterprise AI Architecture</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  Start a conversation
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
                 </button>
                 <button
                   onClick={() => navigate('/explore?capability=AI%20Enterprise%20Solutions')}
-                  className="px-6 py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-[var(--ink-strong)] bg-transparent hover:bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] transition-colors inline-flex items-center space-x-2 cursor-pointer"
+                  className={ghostBtn}
                 >
-                  <span>Compose Technology Brief</span>
-                  <ArrowRight className="w-4 h-4 text-[var(--accent)]" />
+                  Compose a technology brief
+                  <ArrowRight className="h-4 w-4 text-[var(--color-accent)] transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
 
-            {/* Right: Architecture Command Center Visual Anchor (5 cols) */}
-            <div className="lg:col-span-5 space-y-3">
-              <div className="border border-[var(--line)] bg-[var(--paper-2)] p-2 rounded-[2px] shadow-sm">
-                <div className="aspect-[4/3] overflow-hidden rounded-[2px] relative">
-                  <img
-                    src="/assets/images/african_enterprise_architecture_1788986661159.jpg"
-                    alt="African systems engineers and data architects monitoring enterprise AI pipeline infrastructure"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                  />
-                  <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-xs text-white font-mono text-[9px] uppercase tracking-wider px-2 py-0.5">
-                    Nairobi Systems Engineering Hub
-                  </div>
+            <dl className="border-t border-[var(--color-line)] pt-8 lg:col-span-4 lg:border-t-0 lg:border-l lg:pt-2 lg:pl-10">
+              {COMMITMENTS.map(([term, def], i) => (
+                <div key={term} className={i === 0 ? '' : 'mt-7 border-t border-[var(--color-line)] pt-7'}>
+                  <dt className="text-h5 text-[var(--color-ink-strong)]">{term}</dt>
+                  <dd className="mt-2 text-body-sm text-[var(--color-ink-2)]">{def}</dd>
                 </div>
-                <div className="pt-2 px-1 flex items-center justify-between font-mono text-[11px] text-[var(--ink-3)]">
-                  <span>Sovereign VPC Infrastructure</span>
-                  <span className="text-[var(--accent)] font-semibold">100% Data Enclave</span>
-                </div>
+              ))}
+            </dl>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── Architecture: the diagram is the visual ────────────────────── */}
+      <Section tone="ground-2" band="normal" width="wide" rule>
+        <SectionHead
+          title="Five layers, from source data to the desk."
+          lead="Ingestion, private memory, domain-calibrated models, governance and integration. Each layer is inspectable on its own — which is what makes the whole thing auditable later."
+          className="mb-14"
+        />
+        <AITechnologyArchitecture />
+      </Section>
+
+      {/* ── What gets built, with the engineering context beside it ────── */}
+      <Section tone="raised" band="loose" width="wide" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-14 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <h2 className="text-h3">Built for Life Sciences first.</h2>
+            <p className="measure-sm mt-5 text-body text-[var(--color-ink-2)]">
+              The three systems below are where sector knowledge and engineering meet. Each is an
+              offering scoped to your data and regulators, not a product to be installed.
+            </p>
+            <figure className="mt-10">
+              <img
+                src="/assets/images/african_enterprise_architecture_1788986704563.jpg"
+                alt="Systems engineers and data architects working on enterprise AI pipeline infrastructure"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+              />
+              <figcaption className="mt-4 border-t border-[var(--color-line)] pt-4 text-caption text-[var(--color-ink-3)]">
+                Nairobi. Build and integration work is done alongside the team that will run it.
+              </figcaption>
+            </figure>
+          </div>
+
+          <dl className="lg:col-span-7">
+            {SOLUTIONS.map(([term, def]) => (
+              <div key={term} className="border-t border-[var(--color-line)] py-9">
+                <dt className="text-h4 text-[var(--color-ink-strong)]">{term}</dt>
+                <dd className="measure mt-4 text-body text-[var(--color-ink-2)]">{def}</dd>
               </div>
+            ))}
+          </dl>
+        </div>
+      </Section>
+
+      {/* ── Closing ────────────────────────────────────────────────────── */}
+      <Section tone="deep" band="normal" width="default" rule>
+        <div className="grid grid-cols-1 gap-x-16 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <h2 className="text-h2">Start a conversation.</h2>
+            <p className="measure mt-6 text-lead text-[var(--color-ink-2)]">
+              Describe the workflow and the constraints it sits under. We will tell you what is
+              buildable now, and what should wait.
+            </p>
+            <div className="mt-10">
+              <button
+                onClick={() => navigate('/contact?topic=ai-enterprise-solutions')}
+                className={primaryBtn}
+              >
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+              </button>
             </div>
+          </div>
+
+          <div className="space-y-5 border-t border-[var(--color-line)] pt-8 lg:col-span-4 lg:col-start-9 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+            <p className="text-body-sm text-[var(--color-ink-3)]">
+              A system nobody can operate is a system nobody keeps.
+            </p>
+            <button onClick={() => navigate('/what-we-do/ai-training')} className={`${linkCls} block`}>
+              AI Training
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          INTERACTIVE TECHNOLOGY ARCHITECTURE STACK
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-8">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              SYSTEM TOPOLOGY & PIPELINES
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Four-layer production architecture for high-stakes enterprise workflows.
-            </h2>
-          </div>
-
-          <AITechnologyArchitecture />
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────────────────────
-          SPECIALIZED LIFE SCIENCES & ENTERPRISE PRODUCTION SOLUTIONS
-      ───────────────────────────────────────────────────────────── */}
-      <section className="py-16 lg:py-24 bg-[var(--paper)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 space-y-12">
-          <div className="space-y-2 pb-6 border-b border-[var(--line)]">
-            <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-              DOMAIN DEPTH
-            </div>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-[var(--ink-strong)]">
-              Specialized clinical & enterprise AI deployments.
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold uppercase">AI Solution A</div>
-              <h3 className="font-display font-bold text-lg text-[var(--ink-strong)]">
-                Automated Pharmacovigilance (PV) Extraction
-              </h3>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Multilingual NLP systems that parse clinician adverse-event reports, patient social narratives, and hospital discharge notes to automatically generate standardized CIOMS-I and MedDRA-coded safety notifications.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold uppercase">AI Solution B</div>
-              <h3 className="font-display font-bold text-lg text-[var(--ink-strong)]">
-                Cross-Border Regulatory Intelligence Engine
-              </h3>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Semantic comparison engine tracking changes across the Pharmacy and Poisons Board (Kenya), NAFDAC (Nigeria), SAHPRA (South Africa), and EAC regional guidelines to highlight submission variances automatically.
-              </p>
-            </div>
-
-            <div className="p-6 bg-[var(--paper-2)] border border-[var(--line)] rounded-[2px] space-y-3">
-              <div className="font-mono text-xs text-[var(--accent)] font-bold uppercase">AI Solution C</div>
-              <h3 className="font-display font-bold text-lg text-[var(--ink-strong)]">
-                Hospital Throughput & Triage Optimization
-              </h3>
-              <p className="font-body text-xs text-[var(--ink-2)] leading-relaxed">
-                Predictive bed allocation and surgical theater scheduling models that reduce patient wait times, optimize oxygen and consumable burn rates, and improve critical care outcomes in high-volume tertiary hospitals.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Cross-Pillar Handoff */}
-      <section className="py-16 bg-[var(--paper-2)] border-b border-[var(--line)]">
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <span className="font-mono text-xs text-[var(--accent)] font-semibold uppercase">Institutional Adoption</span>
-            <h3 className="font-display text-xl font-bold text-[var(--ink-strong)]">Ensure your team can operate and audit these systems independently.</h3>
-          </div>
-          <button
-            onClick={() => navigate('/what-we-do/ai-training')}
-            className="px-5 py-2.5 bg-[var(--accent)] hover:bg-[var(--accent-2)] text-white text-xs font-mono uppercase tracking-wider font-semibold rounded-[2px] transition-colors cursor-pointer self-start md:self-auto"
-          >
-            See AI Training Programs →
-          </button>
-        </div>
-      </section>
+      </Section>
     </div>
   );
 };

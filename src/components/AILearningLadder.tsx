@@ -1,244 +1,208 @@
-import React, { useState } from 'react';
-import { GraduationCap, Users, ShieldCheck, CheckCircle2, ArrowRight, Award, Target } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigation } from '../context/NavigationContext';
 
 interface CapabilityTier {
   id: string;
-  tierNumber: string;
+  step: string;
+  name: string;
   audience: string;
   focus: string;
   format: string;
-  timeCommitment: string;
-  coreCompetencies: string[];
-  measurableOutcomes: string;
+  commitment: string;
+  competencies: string[];
+  /* What a participant leaves with. Phrased as the shape of the deliverable,
+     never as a result achieved — MindCraft was founded in 2026. */
+  youLeaveWith: string;
 }
 
-const CAPABILITY_TIERS: CapabilityTier[] = [
+const TIERS: CapabilityTier[] = [
   {
     id: 'executive',
-    tierNumber: 'TIER 01',
-    audience: 'C-Suite, Board of Directors & Managing Partners',
-    focus: 'Strategic AI Governance & Fiduciary Capital Allocation',
-    format: 'Intensive 2-day executive retreat or 4-session boardroom masterclass',
-    timeCommitment: '16 hours direct advisory',
-    coreCompetencies: [
-      'Separating technical reality from generative AI hype cycles',
-      'Fiduciary risk oversight under Kenya DPA, POPIA, and global compliance acts',
-      'Capital expenditure evaluation for private infrastructure vs cloud APIs',
-      'Ethical oversight, bias mitigation, and workforce transition policy'
+    step: '01',
+    name: 'Executive',
+    audience: 'Board, C-suite and managing partners',
+    focus: 'AI governance and capital allocation',
+    format: 'Two-day retreat, or four boardroom sessions',
+    commitment: '16 hours',
+    competencies: [
+      'Separating technical reality from generative AI hype',
+      'Risk oversight under Kenya DPA, POPIA and comparable regimes',
+      'Evaluating private infrastructure against hosted APIs',
+      'Ethical oversight, bias mitigation and workforce transition policy',
     ],
-    measurableOutcomes: 'Approved 3-year enterprise AI roadmap and board-level risk governance charter.'
+    youLeaveWith: 'A drafted enterprise AI roadmap and a board-level governance charter.',
   },
   {
     id: 'operational',
-    tierNumber: 'TIER 02',
-    audience: 'Department Heads, Product Managers & Functional Leads',
-    focus: 'Operational Workflow Redesign & Applied Productivity',
-    format: '4-week cohort program with live workflow transformation sprint',
-    timeCommitment: '6 hours/week (24 hours total)',
-    coreCompetencies: [
-      'Systematic decomposition of complex institutional workflows into automatable steps',
-      'Advanced prompt architecture and deterministic structured output extraction',
-      'Verification protocols catching hallucinations before client-facing transmission',
-      'Designing human-in-the-loop validation checkpoints'
+    step: '02',
+    name: 'Operational',
+    audience: 'Department heads, product managers, functional leads',
+    focus: 'Workflow redesign and applied productivity',
+    format: 'Four-week cohort with a live transformation sprint',
+    commitment: '6 hours a week',
+    competencies: [
+      'Decomposing institutional workflows into automatable steps',
+      'Prompt architecture and structured output extraction',
+      'Verification protocols that catch errors before they reach a client',
+      'Designing human-in-the-loop checkpoints',
     ],
-    measurableOutcomes: 'Live deployment of 3 production-grade departmental productivity pipelines.'
+    youLeaveWith: 'Departmental pipelines built during the programme, running on your own workflows.',
   },
   {
     id: 'clinical',
-    tierNumber: 'TIER 03',
-    audience: 'Chief Medical Officers, Clinicians, Pharmacists & Lab Directors',
-    focus: 'Clinical AI Literacy & Diagnostic Workflow Safety',
-    format: 'Accredited continuous professional development (CPD) modular track',
-    timeCommitment: '12 hours modular or 2-day on-site hospital clinic',
-    coreCompetencies: [
-      'Interpreting clinical decision support (CDS) probabilities and false-positive limits',
-      'Ambient clinical documentation tools and EMR voice transcription efficiency',
-      'Patient privacy preservation in electronic medical records and imaging',
-      'Regulatory compliance with national medical practitioner guidelines'
+    step: '03',
+    name: 'Clinical',
+    audience: 'Medical officers, clinicians, pharmacists, lab directors',
+    focus: 'Clinical AI literacy and diagnostic workflow safety',
+    format: 'Modular track, or a two-day on-site session',
+    commitment: '12 hours',
+    competencies: [
+      'Reading clinical decision support probabilities and false-positive limits',
+      'Ambient documentation tools and EMR transcription',
+      'Patient privacy in electronic records and imaging',
+      'Compliance with national medical practitioner guidelines',
     ],
-    measurableOutcomes: 'Certified clinical staff saving 45+ minutes per shift on administrative charting.'
+    youLeaveWith: 'Working fluency with the tools entering clinical settings, and the limits of each.',
   },
   {
     id: 'engineering',
-    tierNumber: 'TIER 04',
-    audience: 'Software Engineers, Systems Architects & Data Scientists',
-    focus: 'Production Sovereign Model Deployment & Architecture',
-    format: '6-week hands-on engineering lab with dedicated cloud sandbox',
-    timeCommitment: '8 hours/week (48 hours total)',
-    coreCompetencies: [
-      'Parameter-Efficient Fine-Tuning (PEFT/QLoRA) on private African domain datasets',
-      'Vector database indexing, hybrid search, and semantic retrieval optimization',
-      'Containerized deployment on local on-premises hardware or private VPC',
-      'Latency optimization, batch inferencing, and deterministic API testing'
+    step: '04',
+    name: 'Engineering',
+    audience: 'Software engineers, systems architects, data scientists',
+    focus: 'Private model deployment and architecture',
+    format: 'Six-week hands-on lab with a dedicated sandbox',
+    commitment: '8 hours a week',
+    competencies: [
+      'Parameter-efficient fine-tuning on private domain datasets',
+      'Vector indexing, hybrid search and retrieval optimisation',
+      'Containerised deployment on local hardware or a private VPC',
+      'Latency optimisation, batch inference and deterministic API testing',
     ],
-    measurableOutcomes: 'Production deployment of an internal sovereign retrieval engine with full unit tests.'
+    youLeaveWith: 'An internal retrieval engine built in the lab, with tests, that you own outright.',
   },
   {
     id: 'excellence',
-    tierNumber: 'TIER 05',
-    audience: 'Cross-Functional Enterprise Taskforce',
-    focus: 'Institutional AI Center of Excellence (CoE) Transfer',
-    format: '3-month embedded mentorship and permanent institutionalization',
-    timeCommitment: 'Quarterly embedded cadence',
-    coreCompetencies: [
-      'Establishing continuous peer-review and model audit committees',
-      'Developing internal certification curricula for new employee onboarding',
-      'Vendor procurement evaluation frameworks for third-party software',
-      'Sustaining sovereign technological autonomy without permanent external reliance'
+    step: '05',
+    name: 'Institutional',
+    audience: 'Cross-functional enterprise taskforce',
+    focus: 'Transfer of the capability itself',
+    format: 'Three-month embedded mentorship',
+    commitment: 'Quarterly cadence',
+    competencies: [
+      'Establishing peer-review and model audit committees',
+      'Internal certification curricula for onboarding',
+      'Procurement evaluation frameworks for third-party software',
+      'Sustaining autonomy without permanent external reliance',
     ],
-    measurableOutcomes: 'Self-governing internal Center of Excellence managing all enterprise AI initiatives.'
-  }
+    youLeaveWith: 'An internal practice that runs without us. That is the point of the ladder.',
+  },
 ];
 
 export const AILearningLadder: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { navigate } = useNavigation();
-  const [selectedTierId, setSelectedTierId] = useState<string>('executive');
+  const [activeId, setActiveId] = useState('executive');
+  const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const activeTier = CAPABILITY_TIERS.find((t) => t.id === selectedTierId) || CAPABILITY_TIERS[0];
+  const activeIndex = TIERS.findIndex((t) => t.id === activeId);
+  const t = TIERS[activeIndex] ?? TIERS[0];
+
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const d = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+    if (!d) return;
+    e.preventDefault();
+    const next = (i + d + TIERS.length) % TIERS.length;
+    setActiveId(TIERS[next].id);
+    refs.current[next]?.focus();
+  };
 
   return (
-    <div className={`border border-[var(--line)] bg-[var(--paper)] rounded-[2px] overflow-hidden ${className}`}>
-      {/* Capability Header */}
-      <div className="p-5 sm:p-6 border-b border-[var(--line)] bg-[var(--paper-2)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div className="font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-widest">
-            HUMAN CAPABILITY LADDER
-          </div>
-          <h3 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-strong)]">
-            Five progressive tiers of institutional AI fluency.
-          </h3>
-        </div>
-        <div className="font-mono text-xs text-[var(--ink-3)] bg-[var(--paper)] px-3 py-1.5 border border-[var(--line)] rounded-[2px] self-start sm:self-auto">
-          Institutional Self-Sufficiency
-        </div>
-      </div>
-
-      {/* Tier Selection Rail */}
-      <div className="p-4 sm:p-6 bg-[var(--paper)] border-b border-[var(--line)]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
-          {CAPABILITY_TIERS.map((tier) => {
-            const isSelected = tier.id === selectedTierId;
-            return (
+    <div className={`grid grid-cols-1 gap-x-14 gap-y-10 lg:grid-cols-12 ${className}`}>
+      {/* The ladder climbs — a vertical rail, not five cards. */}
+      <ol className="lg:col-span-5" role="tablist" aria-label="Capability tiers">
+        {TIERS.map((tier, i) => {
+          const on = tier.id === activeId;
+          const below = i < activeIndex;
+          return (
+            <li key={tier.id}>
               <button
-                key={tier.id}
-                onClick={() => setSelectedTierId(tier.id)}
-                className={`p-3 text-left border rounded-[2px] transition-all cursor-pointer flex flex-col justify-between ${
-                  isSelected
-                    ? 'bg-[var(--paper-2)] border-[var(--accent)] shadow-sm ring-1 ring-[var(--accent)]'
-                    : 'bg-[var(--paper)] border-[var(--line)] hover:border-[var(--ink-3)]'
+                ref={(el) => { refs.current[i] = el; }}
+                role="tab"
+                aria-selected={on}
+                tabIndex={on ? 0 : -1}
+                onClick={() => setActiveId(tier.id)}
+                onKeyDown={(e) => onKeyDown(e, i)}
+                className={`group flex w-full cursor-pointer items-baseline gap-5 border-l-2 py-5 pl-6 pr-4 text-left transition-colors ${
+                  on
+                    ? 'border-[var(--color-accent)] bg-[var(--color-raised)]'
+                    : below
+                      ? 'border-[var(--color-line-strong)] hover:border-[var(--color-accent-2)]'
+                      : 'border-[var(--color-line)] hover:border-[var(--color-line-strong)]'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-xs font-bold text-[var(--accent)]">
-                      {tier.tierNumber}
-                    </span>
-                    <div className={`w-2 h-2 rounded-full ${isSelected ? 'bg-[var(--accent)]' : 'bg-[var(--line-2)]'}`} />
-                  </div>
-                  <div className="font-display font-semibold text-xs sm:text-sm text-[var(--ink-strong)] leading-snug">
-                    {tier.audience.split(',')[0]}
-                  </div>
-                </div>
-                <div className="mt-2 text-[10px] font-mono text-[var(--ink-3)]">
-                  {tier.timeCommitment}
-                </div>
+                <span className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-ink-3)]">
+                  {tier.step}
+                </span>
+                <span className="flex-1">
+                  <span
+                    className={`block text-h5 transition-colors ${
+                      on ? 'text-[var(--color-ink-strong)]' : 'text-[var(--color-ink-2)] group-hover:text-[var(--color-ink)]'
+                    }`}
+                  >
+                    {tier.name}
+                  </span>
+                  <span className="mt-1 block text-caption text-[var(--color-ink-3)]">{tier.audience}</span>
+                </span>
               </button>
-            );
-          })}
-        </div>
-      </div>
+            </li>
+          );
+        })}
+      </ol>
 
-      {/* Selected Tier Deep Inspector */}
-      <div className="p-6 sm:p-8 bg-[var(--paper-2)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left: Tier Focus & Competencies (7 cols) */}
-          <div className="lg:col-span-7 space-y-6 font-body">
-            <div>
-              <div className="flex items-center space-x-2 font-mono text-xs text-[var(--accent)] font-semibold uppercase tracking-wider">
-                <span>{activeTier.tierNumber}</span>
-                <span>·</span>
-                <span>AUDIENCE & MANDATE</span>
-              </div>
-              <h4 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-strong)] mt-1">
-                {activeTier.focus}
-              </h4>
-              <p className="text-sm font-semibold text-[var(--ink)] mt-1">
-                Targeted Audience: <span className="font-normal text-[var(--ink-2)]">{activeTier.audience}</span>
-              </p>
+      <div className="lg:col-span-7">
+        <h3 className="text-h4">{t.focus}</h3>
+
+        <dl className="mt-8">
+          {[
+            ['Format', t.format],
+            ['Commitment', t.commitment],
+          ].map(([k, v]) => (
+            <div
+              key={k}
+              className="grid grid-cols-1 gap-1 border-t border-[var(--color-line)] py-3.5 sm:grid-cols-12 sm:gap-6"
+            >
+              <dt className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)] sm:col-span-3">
+                {k}
+              </dt>
+              <dd className="text-body text-[var(--color-ink-2)] sm:col-span-9">{v}</dd>
             </div>
+          ))}
+        </dl>
 
-            {/* Core Competencies */}
-            <div className="space-y-2">
-              <div className="font-mono text-[10px] uppercase text-[var(--ink-3)] font-semibold tracking-wider">
-                Core Capability Deliverables:
-              </div>
-              <div className="space-y-2">
-                {activeTier.coreCompetencies.map((comp, idx) => (
-                  <div key={idx} className="p-3 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] font-mono text-xs text-[var(--ink)] flex items-start space-x-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--accent)] shrink-0 mt-0.5" />
-                    <span>{comp}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <h4 className="mt-10 font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]">
+          What it covers
+        </h4>
+        <ul className="mt-4">
+          {t.competencies.map((c) => (
+            <li key={c} className="border-t border-[var(--color-line)] py-3 text-body text-[var(--color-ink)]">
+              {c}
+            </li>
+          ))}
+        </ul>
 
-            {/* Measurable Institutional Outcome */}
-            <div className="p-4 bg-[var(--accent-soft)]/60 border border-[var(--accent)]/40 rounded-[2px] space-y-1 font-mono text-xs">
-              <span className="text-[var(--accent)] font-semibold uppercase block text-[10px]">
-                Auditable Program Outcome:
-              </span>
-              <p className="text-[var(--ink-strong)] font-semibold text-xs">
-                {activeTier.measurableOutcomes}
-              </p>
-            </div>
-          </div>
+        <div className="mt-10 border-t border-[var(--color-line-2)] pt-8">
+          <h4 className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-accent)]">
+            What you leave with
+          </h4>
+          <p className="measure mt-3 text-lead text-[var(--color-ink)]">{t.youLeaveWith}</p>
 
-          {/* Right: Executive Lab Visual & Format (5 cols) */}
-          <div className="lg:col-span-5 space-y-5">
-            <div className="border border-[var(--line)] bg-[var(--paper)] p-2 rounded-[2px] shadow-sm">
-              <div className="aspect-[4/3] overflow-hidden rounded-[2px] relative">
-                <img
-                  src="/assets/images/african_executive_training_1788986677111.jpg"
-                  alt="African executives and healthcare directors participating in strategic AI literacy masterclass"
-                  className="w-full h-full object-cover grayscale-[10%]"
-                  loading="lazy"
-                />
-                <div className="absolute top-2 left-2 bg-[var(--paper)]/90 backdrop-blur-xs px-2 py-1 text-[10px] font-mono text-[var(--ink-strong)] font-semibold border border-[var(--line)]">
-                  Executive Masterclass Cohort
-                </div>
-              </div>
-              <div className="pt-2 px-1 flex items-center justify-between font-mono text-[11px] text-[var(--ink-3)]">
-                <span>Nairobi Executive Suite</span>
-                <span className="text-[var(--accent)] font-semibold">Practical Simulation Labs</span>
-              </div>
-            </div>
-
-            <div className="p-5 bg-[var(--paper)] border border-[var(--line)] rounded-[2px] space-y-3 font-mono text-xs">
-              <div className="text-[var(--accent)] font-semibold uppercase tracking-wider text-[11px]">
-                Program Delivery Specifications
-              </div>
-              <div className="space-y-2 text-[var(--ink-2)] border-t border-[var(--line)] pt-3">
-                <div>
-                  <span className="text-[var(--ink-3)] block text-[10px] uppercase">Curriculum Format</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">{activeTier.format}</span>
-                </div>
-                <div>
-                  <span className="text-[var(--ink-3)] block text-[10px] uppercase">Total Commitment</span>
-                  <span className="text-[var(--ink-strong)] font-semibold">{activeTier.timeCommitment}</span>
-                </div>
-              </div>
-
-              <div className="pt-3 border-t border-[var(--line)]">
-                <button
-                  onClick={() => navigate('/contact?topic=ai-training')}
-                  className="w-full py-2.5 bg-[var(--accent)] hover:bg-[var(--accent-2)] text-white text-center font-semibold rounded-[2px] transition-colors cursor-pointer"
-                >
-                  Inquire About Cohort Enrollment
-                </button>
-              </div>
-            </div>
-          </div>
+          <button
+            onClick={() => navigate('/contact?capability=AI%20Training')}
+            className="group mt-8 inline-flex cursor-pointer items-center gap-2 text-body-sm text-[var(--color-accent)] hover:text-[var(--color-accent-2)]"
+          >
+            Discuss a programme
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+          </button>
         </div>
       </div>
     </div>

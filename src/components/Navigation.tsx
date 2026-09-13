@@ -62,8 +62,8 @@ export const Navigation: React.FC = () => {
       id="site-header"
       className={`sticky top-0 z-50 transition-colors duration-200 ${
         isScrolled
-          ? 'bg-[var(--paper)]/95 backdrop-blur-md border-b border-[var(--line)] shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
-          : 'bg-[var(--paper)] border-b border-transparent'
+          ? 'bg-[var(--color-ground)]/95 backdrop-blur-md border-b border-[var(--color-line)] shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
+          : 'bg-[var(--color-ground)] border-b border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
@@ -75,10 +75,10 @@ export const Navigation: React.FC = () => {
             className="group flex flex-col text-left focus:outline-none cursor-pointer"
             aria-label="MindCraft Consultancy Services, Nairobi"
           >
-            <span className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+            <span className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
               MINDCRAFT
             </span>
-            <span className="font-mono text-[10px] tracking-widest text-[var(--ink-3)] uppercase">
+            <span className="font-mono text-[10px] tracking-widest text-[var(--color-ink-3)] uppercase">
               Nairobi · Est. 2026
             </span>
           </button>
@@ -86,7 +86,7 @@ export const Navigation: React.FC = () => {
           {/* Desktop Navigation Links */}
           <nav
             id="desktop-nav"
-            className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-[13px] font-mono tracking-tight text-[var(--ink-2)]"
+            className="hidden lg:flex items-center space-x-6 xl:space-x-8 text-body-sm text-[var(--color-ink-2)]"
             aria-label="Primary site navigation"
           >
             {/* Home */}
@@ -94,8 +94,8 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/')}
               className={`py-2 border-b-2 transition-colors cursor-pointer ${
                 currentPath === '/'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
               Home
@@ -106,8 +106,8 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/about')}
               className={`py-2 border-b-2 transition-colors cursor-pointer ${
                 currentPath === '/about'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
               About
@@ -124,26 +124,26 @@ export const Navigation: React.FC = () => {
                 onClick={() => handleLinkClick('/what-we-do')}
                 className={`flex items-center space-x-1.5 py-2 border-b-2 transition-colors cursor-pointer ${
                   isWhatWeDoActive
-                    ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                    : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                    ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                    : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
                 }`}
                 aria-expanded={whatWeDoOpen}
               >
                 <span>What We Do</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${whatWeDoOpen ? 'rotate-180 text-[var(--accent)]' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${whatWeDoOpen ? 'rotate-180 text-[var(--color-accent)]' : ''}`} />
               </button>
 
               {/* What We Do Dropdown Panel */}
               {whatWeDoOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[520px] bg-[var(--paper)] border border-[var(--line)] shadow-xl p-5 mt-1 rounded-[2px] z-50 text-left font-body">
-                  <div className="pb-3 border-b border-[var(--line)] mb-4 flex items-center justify-between">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[520px] bg-[var(--color-ground)] border border-[var(--color-line)] shadow-xl p-5 mt-1 rounded-[2px] z-50 text-left font-body">
+                  <div className="pb-3 border-b border-[var(--color-line)] mb-4 flex items-center justify-between">
                     <div>
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-[var(--ink-3)]">The Integrated Engine</div>
-                      <div className="font-display font-semibold text-sm text-[var(--ink-strong)]">Four disciplines, one continuous intelligence loop</div>
+                      <div className="font-mono text-eyebrow uppercase tracking-[0.14em] text-[var(--color-ink-3)]">The Integrated Engine</div>
+                      <div className="font-display font-semibold text-sm text-[var(--color-ink-strong)]">Four disciplines, one continuous intelligence loop</div>
                     </div>
                     <button
                       onClick={() => handleLinkClick('/what-we-do')}
-                      className="text-xs font-mono text-[var(--accent)] hover:underline inline-flex items-center space-x-1 cursor-pointer"
+                      className="text-xs font-mono text-[var(--color-accent)] hover:underline inline-flex items-center space-x-1 cursor-pointer"
                     >
                       <span>Overview</span>
                       <ArrowUpRight className="w-3 h-3" />
@@ -153,52 +153,52 @@ export const Navigation: React.FC = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={() => handleLinkClick('/what-we-do/business-consulting')}
-                      className="group p-2.5 rounded-[2px] hover:bg-[var(--paper-2)] transition-colors text-left border border-transparent hover:border-[var(--line)] cursor-pointer"
+                      className="group p-2.5 rounded-[2px] hover:bg-[var(--color-raised)] transition-colors text-left border border-transparent hover:border-[var(--color-line)] cursor-pointer"
                     >
-                      <div className="font-mono text-[10px] text-[var(--accent)] font-semibold">01 · STRATEGY</div>
-                      <div className="font-display font-semibold text-[13px] text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                      <div className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-accent)]">01 · STRATEGY</div>
+                      <div className="font-display text-body-sm font-medium text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                         Business Consulting
                       </div>
-                      <div className="text-[11px] text-[var(--ink-3)] leading-snug mt-0.5">
+                      <div className="text-caption text-[var(--color-ink-3)] leading-snug mt-0.5">
                         Corporate strategy, digital & AI transformation, organizational design.
                       </div>
                     </button>
 
                     <button
                       onClick={() => handleLinkClick('/what-we-do/market-research')}
-                      className="group p-2.5 rounded-[2px] hover:bg-[var(--paper-2)] transition-colors text-left border border-transparent hover:border-[var(--line)] cursor-pointer"
+                      className="group p-2.5 rounded-[2px] hover:bg-[var(--color-raised)] transition-colors text-left border border-transparent hover:border-[var(--color-line)] cursor-pointer"
                     >
-                      <div className="font-mono text-[10px] text-[var(--accent)] font-semibold">02 · INTELLIGENCE</div>
-                      <div className="font-display font-semibold text-[13px] text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                      <div className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-accent)]">02 · INTELLIGENCE</div>
+                      <div className="font-display text-body-sm font-medium text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                         Market Research
                       </div>
-                      <div className="text-[11px] text-[var(--ink-3)] leading-snug mt-0.5">
+                      <div className="text-caption text-[var(--color-ink-3)] leading-snug mt-0.5">
                         Primary fieldwork across 45 markets, desk research, program impact.
                       </div>
                     </button>
 
                     <button
                       onClick={() => handleLinkClick('/what-we-do/ai-training')}
-                      className="group p-2.5 rounded-[2px] hover:bg-[var(--paper-2)] transition-colors text-left border border-transparent hover:border-[var(--line)] cursor-pointer"
+                      className="group p-2.5 rounded-[2px] hover:bg-[var(--color-raised)] transition-colors text-left border border-transparent hover:border-[var(--color-line)] cursor-pointer"
                     >
-                      <div className="font-mono text-[10px] text-[var(--accent)] font-semibold">03 · EMBEDMENT</div>
-                      <div className="font-display font-semibold text-[13px] text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                      <div className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-accent)]">03 · EMBEDMENT</div>
+                      <div className="font-display text-body-sm font-medium text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                         AI Training & Literacy
                       </div>
-                      <div className="text-[11px] text-[var(--ink-3)] leading-snug mt-0.5">
+                      <div className="text-caption text-[var(--color-ink-3)] leading-snug mt-0.5">
                         Executive AI masterclasses, functional workflows, responsible governance.
                       </div>
                     </button>
 
                     <button
                       onClick={() => handleLinkClick('/what-we-do/ai-enterprise-solutions')}
-                      className="group p-2.5 rounded-[2px] hover:bg-[var(--paper-2)] transition-colors text-left border border-transparent hover:border-[var(--line)] cursor-pointer"
+                      className="group p-2.5 rounded-[2px] hover:bg-[var(--color-raised)] transition-colors text-left border border-transparent hover:border-[var(--color-line)] cursor-pointer"
                     >
-                      <div className="font-mono text-[10px] text-[var(--accent)] font-semibold">04 · IMPLEMENTATION</div>
-                      <div className="font-display font-semibold text-[13px] text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                      <div className="font-mono text-eyebrow tracking-[0.14em] text-[var(--color-accent)]">04 · IMPLEMENTATION</div>
+                      <div className="font-display text-body-sm font-medium text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                         AI Enterprise Solutions
                       </div>
-                      <div className="text-[11px] text-[var(--ink-3)] leading-snug mt-0.5">
+                      <div className="text-caption text-[var(--color-ink-3)] leading-snug mt-0.5">
                         Custom LLMs, predictive analytics, RPA & clinical AI solutions.
                       </div>
                     </button>
@@ -218,33 +218,33 @@ export const Navigation: React.FC = () => {
                 onClick={() => handleLinkClick('/industries')}
                 className={`flex items-center space-x-1.5 py-2 border-b-2 transition-colors cursor-pointer ${
                   isIndustriesActive
-                    ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                    : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                    ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                    : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
                 }`}
                 aria-expanded={industriesOpen}
               >
                 <span>Industries</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${industriesOpen ? 'rotate-180 text-[var(--accent)]' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${industriesOpen ? 'rotate-180 text-[var(--color-accent)]' : ''}`} />
               </button>
 
               {/* Industries Dropdown */}
               {industriesOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-80 bg-[var(--paper)] border border-[var(--line)] shadow-xl p-4 mt-1 rounded-[2px] z-50 text-left font-body">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-80 bg-[var(--color-ground)] border border-[var(--color-line)] shadow-xl p-4 mt-1 rounded-[2px] z-50 text-left font-body">
                   {/* Spotlight: Life Sciences */}
                   <button
                     onClick={() => handleLinkClick('/industries/life-sciences')}
-                    className="w-full p-3 rounded-[2px] bg-[var(--paper-2)] border border-[var(--line-2)] hover:border-[var(--accent)] text-left mb-3 group transition-colors cursor-pointer"
+                    className="w-full p-3 rounded-[2px] bg-[var(--color-raised)] border border-[var(--color-line-2)] hover:border-[var(--color-accent)] text-left mb-3 group transition-colors cursor-pointer"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--accent)] font-semibold px-1.5 py-0.5 bg-[var(--accent-soft)]">
+                      <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--color-accent)] font-semibold px-1.5 py-0.5 bg-[var(--color-accent-tint)]">
                         Core Heritage
                       </span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-[var(--accent)]" />
+                      <ArrowUpRight className="w-3.5 h-3.5 text-[var(--color-accent)]" />
                     </div>
-                    <div className="font-display font-semibold text-sm text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                    <div className="font-display font-semibold text-sm text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                       Life Sciences Practice
                     </div>
-                    <div className="text-[11px] text-[var(--ink-3)] leading-tight mt-1">
+                    <div className="text-caption text-[var(--color-ink-3)] leading-tight mt-1">
                       Pharmaceuticals, medical devices, diagnostics, surgical & healthcare providers.
                     </div>
                   </button>
@@ -252,13 +252,13 @@ export const Navigation: React.FC = () => {
                   {/* All Industries */}
                   <button
                     onClick={() => handleLinkClick('/industries')}
-                    className="w-full p-2.5 rounded-[2px] hover:bg-[var(--paper-2)] text-left group transition-colors cursor-pointer border border-transparent hover:border-[var(--line)]"
+                    className="w-full p-2.5 rounded-[2px] hover:bg-[var(--color-raised)] text-left group transition-colors cursor-pointer border border-transparent hover:border-[var(--color-line)]"
                   >
-                    <div className="font-display font-semibold text-[13px] text-[var(--ink-strong)] group-hover:text-[var(--accent)] transition-colors">
+                    <div className="font-display text-body-sm font-medium text-[var(--color-ink-strong)] group-hover:text-[var(--color-accent)] transition-colors">
                       All Industry Verticals
                     </div>
-                    <div className="text-[11px] text-[var(--ink-3)] leading-tight mt-0.5">
-                      Explore our depth across 20+ diversified economic sectors.
+                    <div className="text-caption text-[var(--color-ink-3)] leading-tight mt-0.5">
+                      Depth in Life Sciences, breadth across diversified sectors.
                     </div>
                   </button>
                 </div>
@@ -270,8 +270,8 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/where-we-work')}
               className={`py-2 border-b-2 transition-colors cursor-pointer ${
                 currentPath === '/where-we-work'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
               Where We Work
@@ -282,8 +282,8 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/how-we-work')}
               className={`py-2 border-b-2 transition-colors cursor-pointer ${
                 currentPath === '/how-we-work'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
               How We Work
@@ -294,11 +294,11 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/explore')}
               className={`py-2 border-b-2 transition-colors cursor-pointer flex items-center space-x-1 ${
                 currentPath === '/explore'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
-              <Compass className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <Compass className="w-3.5 h-3.5 text-[var(--color-accent)]" />
               <span>Explore</span>
             </button>
 
@@ -307,8 +307,8 @@ export const Navigation: React.FC = () => {
               onClick={() => handleLinkClick('/insights')}
               className={`py-2 border-b-2 transition-colors cursor-pointer ${
                 currentPath === '/insights'
-                  ? 'text-[var(--ink-strong)] border-[var(--accent)] font-semibold'
-                  : 'border-transparent hover:text-[var(--ink-strong)] hover:border-[var(--line-2)]'
+                  ? 'text-[var(--color-ink-strong)] border-[var(--color-accent)] font-semibold'
+                  : 'border-transparent hover:text-[var(--color-ink-strong)] hover:border-[var(--color-line-2)]'
               }`}
             >
               Insights
@@ -320,7 +320,7 @@ export const Navigation: React.FC = () => {
             <button
               id="header-cta-btn"
               onClick={() => handleLinkClick('/contact')}
-              className="inline-flex items-center space-x-2 px-4 py-2 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors shadow-sm cursor-pointer"
+              className="inline-flex items-center space-x-2 px-4 py-2 text-body-sm font-medium text-[var(--color-ground-deep)] bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] rounded-[2px] transition-colors cursor-pointer"
             >
               <span>Start a Conversation</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -333,7 +333,7 @@ export const Navigation: React.FC = () => {
               id="mobile-menu-toggle"
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-[var(--ink)] hover:text-[var(--accent)] focus:outline-none cursor-pointer"
+              className="p-2 text-[var(--color-ink)] hover:text-[var(--color-accent)] focus:outline-none cursor-pointer"
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -347,10 +347,10 @@ export const Navigation: React.FC = () => {
       {mobileMenuOpen && (
         <div
           id="mobile-menu-drawer"
-          className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[var(--paper)] z-50 overflow-y-auto border-t border-[var(--line)] px-6 py-8 flex flex-col justify-between"
+          className="lg:hidden fixed inset-x-0 top-20 bottom-0 bg-[var(--color-ground)] z-50 overflow-y-auto border-t border-[var(--color-line)] px-6 py-8 flex flex-col justify-between"
         >
           <div className="space-y-6">
-            <div className="font-mono text-[10px] text-[var(--ink-3)] uppercase tracking-widest pb-2 border-b border-[var(--line)]">
+            <div className="font-mono text-[10px] text-[var(--color-ink-3)] uppercase tracking-widest pb-2 border-b border-[var(--color-line)]">
               Navigation Index
             </div>
 
@@ -358,7 +358,7 @@ export const Navigation: React.FC = () => {
               {/* Home */}
               <button
                 onClick={() => handleLinkClick('/')}
-                className={`text-left py-1 text-lg ${currentPath === '/' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg ${currentPath === '/' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
                 Home
               </button>
@@ -366,7 +366,7 @@ export const Navigation: React.FC = () => {
               {/* About */}
               <button
                 onClick={() => handleLinkClick('/about')}
-                className={`text-left py-1 text-lg ${currentPath === '/about' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg ${currentPath === '/about' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
                 About
               </button>
@@ -375,27 +375,27 @@ export const Navigation: React.FC = () => {
               <div>
                 <button
                   onClick={() => setMobileWhatWeDoExpanded(!mobileWhatWeDoExpanded)}
-                  className="w-full flex items-center justify-between text-left py-1 text-lg text-[var(--ink-strong)]"
+                  className="w-full flex items-center justify-between text-left py-1 text-lg text-[var(--color-ink-strong)]"
                 >
-                  <span className={isWhatWeDoActive ? 'text-[var(--accent)] font-bold' : ''}>What We Do</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileWhatWeDoExpanded ? 'rotate-180 text-[var(--accent)]' : ''}`} />
+                  <span className={isWhatWeDoActive ? 'text-[var(--color-accent)] font-bold' : ''}>What We Do</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileWhatWeDoExpanded ? 'rotate-180 text-[var(--color-accent)]' : ''}`} />
                 </button>
 
                 {mobileWhatWeDoExpanded && (
-                  <div className="pl-4 pt-2 pb-2 space-y-3 font-mono text-xs border-l-2 border-[var(--accent)] mt-2">
-                    <button onClick={() => handleLinkClick('/what-we-do')} className="block text-left text-[var(--ink)] hover:text-[var(--accent)]">
+                  <div className="pl-4 pt-2 pb-2 space-y-3 font-mono text-xs border-l-2 border-[var(--color-accent)] mt-2">
+                    <button onClick={() => handleLinkClick('/what-we-do')} className="block text-left text-[var(--color-ink)] hover:text-[var(--color-accent)]">
                       The Integrated Engine (Overview)
                     </button>
-                    <button onClick={() => handleLinkClick('/what-we-do/business-consulting')} className="block text-left text-[var(--ink-2)] hover:text-[var(--accent)]">
+                    <button onClick={() => handleLinkClick('/what-we-do/business-consulting')} className="block text-left text-[var(--color-ink-2)] hover:text-[var(--color-accent)]">
                       Business Consulting
                     </button>
-                    <button onClick={() => handleLinkClick('/what-we-do/market-research')} className="block text-left text-[var(--ink-2)] hover:text-[var(--accent)]">
+                    <button onClick={() => handleLinkClick('/what-we-do/market-research')} className="block text-left text-[var(--color-ink-2)] hover:text-[var(--color-accent)]">
                       Market Research
                     </button>
-                    <button onClick={() => handleLinkClick('/what-we-do/ai-training')} className="block text-left text-[var(--ink-2)] hover:text-[var(--accent)]">
+                    <button onClick={() => handleLinkClick('/what-we-do/ai-training')} className="block text-left text-[var(--color-ink-2)] hover:text-[var(--color-accent)]">
                       AI Training & Digital Literacy
                     </button>
-                    <button onClick={() => handleLinkClick('/what-we-do/ai-enterprise-solutions')} className="block text-left text-[var(--ink-2)] hover:text-[var(--accent)]">
+                    <button onClick={() => handleLinkClick('/what-we-do/ai-enterprise-solutions')} className="block text-left text-[var(--color-ink-2)] hover:text-[var(--color-accent)]">
                       AI Enterprise Solutions
                     </button>
                   </div>
@@ -406,18 +406,18 @@ export const Navigation: React.FC = () => {
               <div>
                 <button
                   onClick={() => setMobileIndustriesExpanded(!mobileIndustriesExpanded)}
-                  className="w-full flex items-center justify-between text-left py-1 text-lg text-[var(--ink-strong)]"
+                  className="w-full flex items-center justify-between text-left py-1 text-lg text-[var(--color-ink-strong)]"
                 >
-                  <span className={isIndustriesActive ? 'text-[var(--accent)] font-bold' : ''}>Industries</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileIndustriesExpanded ? 'rotate-180 text-[var(--accent)]' : ''}`} />
+                  <span className={isIndustriesActive ? 'text-[var(--color-accent)] font-bold' : ''}>Industries</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${mobileIndustriesExpanded ? 'rotate-180 text-[var(--color-accent)]' : ''}`} />
                 </button>
 
                 {mobileIndustriesExpanded && (
-                  <div className="pl-4 pt-2 pb-2 space-y-3 font-mono text-xs border-l-2 border-[var(--accent)] mt-2">
-                    <button onClick={() => handleLinkClick('/industries/life-sciences')} className="block text-left text-[var(--accent)] font-semibold">
+                  <div className="pl-4 pt-2 pb-2 space-y-3 font-mono text-xs border-l-2 border-[var(--color-accent)] mt-2">
+                    <button onClick={() => handleLinkClick('/industries/life-sciences')} className="block text-left text-[var(--color-accent)] font-semibold">
                       Life Sciences (Core Specialization)
                     </button>
-                    <button onClick={() => handleLinkClick('/industries')} className="block text-left text-[var(--ink-2)] hover:text-[var(--accent)]">
+                    <button onClick={() => handleLinkClick('/industries')} className="block text-left text-[var(--color-ink-2)] hover:text-[var(--color-accent)]">
                       All Industry Verticals (20+)
                     </button>
                   </div>
@@ -427,7 +427,7 @@ export const Navigation: React.FC = () => {
               {/* Where We Work */}
               <button
                 onClick={() => handleLinkClick('/where-we-work')}
-                className={`text-left py-1 text-lg ${currentPath === '/where-we-work' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg ${currentPath === '/where-we-work' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
                 Where We Work
               </button>
@@ -435,7 +435,7 @@ export const Navigation: React.FC = () => {
               {/* How We Work */}
               <button
                 onClick={() => handleLinkClick('/how-we-work')}
-                className={`text-left py-1 text-lg ${currentPath === '/how-we-work' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg ${currentPath === '/how-we-work' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
                 How We Work
               </button>
@@ -443,16 +443,16 @@ export const Navigation: React.FC = () => {
               {/* Explore */}
               <button
                 onClick={() => handleLinkClick('/explore')}
-                className={`text-left py-1 text-lg flex items-center space-x-2 ${currentPath === '/explore' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg flex items-center space-x-2 ${currentPath === '/explore' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
-                <Compass className="w-4 h-4 text-[var(--accent)]" />
+                <Compass className="w-4 h-4 text-[var(--color-accent)]" />
                 <span>Explore</span>
               </button>
 
               {/* Insights */}
               <button
                 onClick={() => handleLinkClick('/insights')}
-                className={`text-left py-1 text-lg ${currentPath === '/insights' ? 'text-[var(--accent)] font-bold' : 'text-[var(--ink-strong)]'}`}
+                className={`text-left py-1 text-lg ${currentPath === '/insights' ? 'text-[var(--color-accent)] font-bold' : 'text-[var(--color-ink-strong)]'}`}
               >
                 Insights
               </button>
@@ -460,15 +460,15 @@ export const Navigation: React.FC = () => {
           </div>
 
           {/* Mobile Footer Area */}
-          <div className="pt-8 border-t border-[var(--line)] space-y-4">
-            <div className="font-mono text-xs text-[var(--ink-3)] space-y-1">
+          <div className="pt-8 border-t border-[var(--color-line)] space-y-4">
+            <div className="font-mono text-xs text-[var(--color-ink-3)] space-y-1">
               <div>Global Headquarters: Nairobi, Kenya</div>
               <div>Direct: info@mindcraftconsultancy.com</div>
             </div>
 
             <button
               onClick={() => handleLinkClick('/contact')}
-              className="w-full py-3.5 text-xs font-mono tracking-wider uppercase font-semibold text-white bg-[var(--accent)] hover:bg-[var(--accent-2)] rounded-[2px] transition-colors text-center flex items-center justify-center space-x-2 cursor-pointer"
+              className="w-full py-3.5 text-body-sm font-medium text-[var(--color-ground-deep)] bg-[var(--color-accent)] hover:bg-[var(--color-accent-2)] rounded-[2px] transition-colors text-center flex items-center justify-center space-x-2 cursor-pointer"
             >
               <span>Start a Conversation</span>
               <ArrowUpRight className="w-4 h-4" />
